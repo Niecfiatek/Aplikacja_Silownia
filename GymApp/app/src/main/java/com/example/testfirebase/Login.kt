@@ -14,10 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
-<<<<<<< HEAD
-=======
-import com.google.firebase.auth.FirebaseUser
->>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
+
 
 class Login : AppCompatActivity() {
     lateinit var editTextMail: TextInputEditText
@@ -26,8 +23,6 @@ class Login : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var progressBar: ProgressBar
     lateinit var textView: TextView
-<<<<<<< HEAD
-=======
 
     public override fun onStart() {
         super.onStart()
@@ -39,7 +34,7 @@ class Login : AppCompatActivity() {
             finish()
         }
     }
->>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -63,8 +58,8 @@ class Login : AppCompatActivity() {
                 progressBar.visibility = View.VISIBLE
                 var email: String
                 var password: String
-                email = editTextMail.getText().toString()
-                password = editTextMail.getText().toString()
+                email = editTextMail.text.toString()
+                password = editTextMail.text.toString()
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
