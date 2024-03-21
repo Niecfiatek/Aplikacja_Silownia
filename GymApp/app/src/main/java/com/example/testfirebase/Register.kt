@@ -33,9 +33,10 @@ class Register : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val intent = Intent(applicationContext, MainActivity::class.java)
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
             startActivity(intent)
-            finish()
         }
     }
 
@@ -57,16 +58,17 @@ class Register : AppCompatActivity() {
 
 
         textView.setOnClickListener {
-            val intent = Intent(applicationContext, Login::class.java)
+            val intent = Intent(applicationContext, Login::class.java).apply {
+                var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
             startActivity(intent)
-            finish()
         }
 
 
 
 
         buttonReg.setOnClickListener{
-            fun onClick(view:View){
+
                 progressBar.visibility = View.VISIBLE
                 var email:String
                 var password:String
@@ -82,9 +84,13 @@ class Register : AppCompatActivity() {
                 }
 
                 auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener() { task ->
-                        progressBar.visibility = View.GONE
-                        if (task.isSuccessful) {
+                    .addOnSuccessListener() { task ->
+                        //progressBar.visibility = View.GONE
+                        if (task.user != null) {
+                            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                                var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            }
+                            startActivity(intent)
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(baseContext, "Account created", Toast.LENGTH_SHORT).show()
                         } else {
@@ -92,7 +98,7 @@ class Register : AppCompatActivity() {
                             Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                         }
                     }
-            }
+
         }
     }
 }

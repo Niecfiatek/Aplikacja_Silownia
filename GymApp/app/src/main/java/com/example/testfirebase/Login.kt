@@ -17,12 +17,13 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class Login : AppCompatActivity() {
-    lateinit var editTextMail: TextInputEditText
-    lateinit var editTextPassword: TextInputEditText
-    lateinit var buttonLogin: Button
-    lateinit var auth: FirebaseAuth
-    lateinit var progressBar: ProgressBar
-    lateinit var textView: TextView
+    private lateinit var editTextMail: TextInputEditText
+    private lateinit var editTextPassword: TextInputEditText
+    private lateinit var buttonLogin: Button
+    private lateinit var auth: FirebaseAuth
+    private lateinit var progressBar: ProgressBar
+    private lateinit var textView: TextView
+
 
     public override fun onStart() {
         super.onStart()
@@ -39,7 +40,11 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         auth = FirebaseAuth.getInstance()
         editTextMail = findViewById(R.id.email)
         editTextPassword = findViewById(R.id.password)
@@ -54,42 +59,29 @@ class Login : AppCompatActivity() {
         }
 
         buttonLogin.setOnClickListener {
-            fun onClick(view:View) {
-                progressBar.visibility = View.VISIBLE
-                var email: String
-                var password: String
-                email = editTextMail.text.toString()
-                password = editTextMail.text.toString()
-
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
-                }
-
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        progressBar.visibility = View.GONE
-                        if (task.isSuccessful) {
-                            Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(applicationContext, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-
+            progressBar.visibility = View.VISIBLE
+            val email: String = editTextMail.text.toString()
+            val password: String = editTextMail.text.toString()
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
             }
+
+            if (TextUtils.isEmpty(password)) {
+                Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
+            }
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                            var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        }
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
 }

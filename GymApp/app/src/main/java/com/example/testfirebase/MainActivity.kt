@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -28,24 +27,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         if(user == null){
-            val intent = Intent(applicationContext, Login::class.java.apply {
-                var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            val intent = Intent(applicationContext, Login::class.java).apply {
+                (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
             startActivity(intent)
-            finish()
         }
         else{
-            textView.setText(user.email)
+            textView.text = user.email
         }
-        b.setOnClickListener(){
-            fun onClick(){
-                FirebaseAuth.getInstance().signOut()
-                val intent = Intent(applicationContext, Login::class.java.apply {
-                    var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                })
-                startActivity(intent)
-                finish()
-            }
+        b.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(applicationContext, Login::class.java.apply {
+                (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
+            startActivity(intent)
         }
     }
 
