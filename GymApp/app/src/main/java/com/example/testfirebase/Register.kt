@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import android.content.Intent
 
 class Register : AppCompatActivity() {
 
@@ -22,6 +25,8 @@ class Register : AppCompatActivity() {
     lateinit var buttonReg:Button
     lateinit var auth:FirebaseAuth
     lateinit var progressBar:ProgressBar
+    lateinit var textView:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,6 +41,14 @@ class Register : AppCompatActivity() {
         editTextPassword = findViewById(R.id.password)
         buttonReg = findViewById(R.id.btn_register)
         progressBar = findViewById(R.id.progressBar)
+        textView = findViewById(R.id.loginNow)
+
+        textView.setOnClickListener {
+            val intent = Intent(applicationContext, Login::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         buttonReg.setOnClickListener{
             fun onClick(view:View){
                 progressBar.visibility = View.VISIBLE
