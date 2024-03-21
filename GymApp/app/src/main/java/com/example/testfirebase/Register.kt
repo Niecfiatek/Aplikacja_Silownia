@@ -1,11 +1,13 @@
 package com.example.testfirebase
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,18 @@ class Register : AppCompatActivity() {
     lateinit var buttonReg:Button
     lateinit var auth:FirebaseAuth
     lateinit var progressBar:ProgressBar
+    lateinit var textView:TextView
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,6 +50,16 @@ class Register : AppCompatActivity() {
         editTextPassword = findViewById(R.id.password)
         buttonReg = findViewById(R.id.btn_register)
         progressBar = findViewById(R.id.progressBar)
+        textView = findViewById(R.id.loginNow)
+        textView.setOnClickListener({
+        fun onClick(view:View){
+                val intent = Intent(applicationContext, Login::class.java.apply {
+                    var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+                startActivity(intent)
+                finish()
+            }
+        })
         buttonReg.setOnClickListener{
             fun onClick(view:View){
                 progressBar.visibility = View.VISIBLE

@@ -57,10 +57,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_register"
-        android:text="@string/register"
-        android:layout_width="wrap_content"
+    <TextView
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:id="@+id/registerNow"
+        android:layout_marginTop="20dp"
+        android:text="Click to Register"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
 </LinearLayout>
