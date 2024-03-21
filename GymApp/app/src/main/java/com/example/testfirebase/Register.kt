@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -27,6 +28,19 @@ class Register : AppCompatActivity() {
     lateinit var progressBar:ProgressBar
     lateinit var textView:TextView
 
+<<<<<<< HEAD
+=======
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+>>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,6 +56,7 @@ class Register : AppCompatActivity() {
         buttonReg = findViewById(R.id.btn_register)
         progressBar = findViewById(R.id.progressBar)
         textView = findViewById(R.id.loginNow)
+<<<<<<< HEAD
 
         textView.setOnClickListener {
             val intent = Intent(applicationContext, Login::class.java)
@@ -49,6 +64,17 @@ class Register : AppCompatActivity() {
             finish()
         }
 
+=======
+        textView.setOnClickListener({
+        fun onClick(view:View){
+                val intent = Intent(applicationContext, Login::class.java.apply {
+                    var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+                startActivity(intent)
+                finish()
+            }
+        })
+>>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
         buttonReg.setOnClickListener{
             fun onClick(view:View){
                 progressBar.visibility = View.VISIBLE

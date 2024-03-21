@@ -2,6 +2,8 @@ package com.example.testfirebase
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +13,10 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
-    private val fbAuth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val b:Button = findViewById(R.id.logout)
+    private val textView:TextView = findViewById(R.id.user_details)
+    private val user = auth.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,19 +27,26 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
-    }
-    override fun onStart() {
-        super.onStart()
-        isCurrentUser()
-    }
-    private fun isCurrentUser() {
-        fbAuth.currentUser?.let {auth ->
-            val intent = Intent(applicationContext, MainActivity::class.java).apply {
-                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)      //Flagi aby "wstecz" nie spowodowalo wylogowania
-            }
+        if(user == null){
+            val intent = Intent(applicationContext, Login::class.java.apply {
+                var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
             startActivity(intent)
+            finish()
+        }
+        else{
+            textView.setText(user.email)
+        }
+        b.setOnClickListener(){
+            fun onClick(){
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(applicationContext, Login::class.java.apply {
+                    var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+                startActivity(intent)
+                finish()
+            }
         }
     }
+
 }

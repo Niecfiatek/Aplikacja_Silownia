@@ -57,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+<<<<<<< HEAD
     <com.google.android.material.textview.MaterialTextView
         android:textStyle="bold"
         android:textSize="20sp"
@@ -68,5 +69,17 @@
         android:layout_height="wrap_content">
 
     </com.google.android.material.textview.MaterialTextView>
+=======
+    <TextView
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:id="@+id/registerNow"
+        android:layout_marginTop="20dp"
+        android:text="Click to Register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+>>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
+
 
 </LinearLayout>

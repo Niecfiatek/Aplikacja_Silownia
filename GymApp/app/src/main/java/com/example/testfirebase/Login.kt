@@ -14,6 +14,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+<<<<<<< HEAD
+=======
+import com.google.firebase.auth.FirebaseUser
+>>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
 
 class Login : AppCompatActivity() {
     lateinit var editTextMail: TextInputEditText
@@ -22,6 +26,20 @@ class Login : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var progressBar: ProgressBar
     lateinit var textView: TextView
+<<<<<<< HEAD
+=======
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+>>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

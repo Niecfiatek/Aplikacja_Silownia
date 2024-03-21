@@ -61,7 +61,11 @@
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:id="@+id/loginNow"
+<<<<<<< HEAD
         android:text="@string/click_to_login"
+=======
+        android:text="Click to login"
+>>>>>>> d73aa399aa750731bfae8d90723d09ab517504a5
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
