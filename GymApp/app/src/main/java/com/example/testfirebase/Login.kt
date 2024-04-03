@@ -61,7 +61,7 @@ class Login : AppCompatActivity() {
         buttonLogin.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             val email: String = editTextMail.text.toString()
-            val password: String = editTextMail.text.toString()
+            val password: String = editTextPassword.text.toString()
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
             }
@@ -73,15 +73,16 @@ class Login : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(applicationContext, MainActivity::class.java).apply {
-                            var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        }
+                        val intent = Intent(applicationContext, MainActivity::class.java)
                         startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        finish()
                     }
+                    else {
+                        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        progressBar.visibility = View.GONE
+                    }
+
                 }
         }
-
     }
 }

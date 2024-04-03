@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 class MainActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
-    private val b:Button = findViewById(R.id.logout)
-    private val textView:TextView = findViewById(R.id.user_details)
+    private lateinit var b: Button
+    private lateinit var textView:TextView
     private val user = auth.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +26,11 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        b = findViewById(R.id.logout)
+        textView = findViewById(R.id.user_details)
         if(user == null){
             val intent = Intent(applicationContext, Login::class.java).apply {
-                (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
         }
@@ -37,9 +39,9 @@ class MainActivity : AppCompatActivity() {
         }
         b.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            val intent = Intent(applicationContext, Login::class.java.apply {
-                (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            val intent = Intent(applicationContext, Login::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
             startActivity(intent)
         }
     }

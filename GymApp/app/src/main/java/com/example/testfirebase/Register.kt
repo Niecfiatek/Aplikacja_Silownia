@@ -73,14 +73,16 @@ class Register : AppCompatActivity() {
                 var email:String
                 var password:String
                 email = editTextMail.getText().toString()
-                password = editTextMail.getText().toString()
+                password = editTextPassword.getText().toString()
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
 
                 auth.createUserWithEmailAndPassword(email, password)
@@ -88,7 +90,7 @@ class Register : AppCompatActivity() {
                         //progressBar.visibility = View.GONE
                         if (task.user != null) {
                             val intent = Intent(applicationContext, MainActivity::class.java).apply {
-                                var flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             }
                             startActivity(intent)
                             // Sign in success, update UI with the signed-in user's information
