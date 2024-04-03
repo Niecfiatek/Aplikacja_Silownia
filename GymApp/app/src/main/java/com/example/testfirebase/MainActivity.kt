@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         textView = findViewById(R.id.user_details)
 
         calendar.setOnClickListener {
-            val intent = Intent(applicationContext, Register::class.java).apply {
+            val intent = Intent(applicationContext, Calendar::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
