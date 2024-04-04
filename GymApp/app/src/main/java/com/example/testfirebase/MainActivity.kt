@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private lateinit var b: Button
+    private lateinit var addEx: Button
+    private lateinit var calendar: Button
     private lateinit var textView:TextView
     private val user = auth.currentUser
 
@@ -40,6 +42,28 @@ class MainActivity : AppCompatActivity() {
         b.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(applicationContext, Login::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+        }
+
+        /// AddExercise Button
+        addEx = findViewById(R.id.addExercise)
+        textView = findViewById(R.id.user_details)
+
+        addEx.setOnClickListener {
+            val intent = Intent(applicationContext, AddExercise::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+        }
+
+        /// Calendar Button
+        calendar = findViewById(R.id.calendar)
+        textView = findViewById(R.id.user_details)
+
+        calendar.setOnClickListener {
+            val intent = Intent(applicationContext, Calendar::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
