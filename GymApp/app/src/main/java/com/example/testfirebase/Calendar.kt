@@ -1,8 +1,10 @@
 package com.example.testfirebase
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.widget.Button
 import android.widget.DatePicker
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +18,7 @@ import java.util.Locale
 
 class Calendar : AppCompatActivity() {
     private lateinit var binding: ActivityCalendarBinding
-
+    private lateinit var back: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarBinding.inflate(layoutInflater)
@@ -24,6 +26,16 @@ class Calendar : AppCompatActivity() {
         binding.calendar.setOnClickListener {
             setDate()
         }
+
+        back = findViewById(R.id.back)
+
+        back.setOnClickListener {
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+        }
+
         setToolbar()
     }
 

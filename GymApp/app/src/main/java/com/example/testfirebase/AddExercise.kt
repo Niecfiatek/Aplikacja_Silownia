@@ -19,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 class AddExercise : AppCompatActivity() {
 
     private lateinit var add: Button
+    private lateinit var back: Button
     private lateinit var textView: TextView
     private lateinit var nameInput: EditText
     private val db = Firebase.firestore
@@ -32,6 +33,7 @@ class AddExercise : AppCompatActivity() {
             insets
         }
         add = findViewById(R.id.add)
+        back = findViewById(R.id.back)
         textView = findViewById(R.id.name)
         nameInput = findViewById(R.id.nameInput)
 
@@ -56,6 +58,13 @@ class AddExercise : AppCompatActivity() {
                     Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
                     nameInput.text.clear()
                 }
+        }
+
+        back.setOnClickListener {
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
         }
     }
 
