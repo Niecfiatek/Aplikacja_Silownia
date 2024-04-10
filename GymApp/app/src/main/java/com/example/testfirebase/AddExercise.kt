@@ -4,6 +4,8 @@ import android.content.ClipDescription
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -18,14 +20,13 @@ import com.google.firebase.ktx.Firebase
 //import com.nk.myapplication.databinding.ActivityFirestoreBinding
 
 class AddExercise : AppCompatActivity() {
-
     private lateinit var add: Button
     private lateinit var back: Button
     private lateinit var textView: TextView
     private lateinit var nameInput: EditText
-    private lateinit var bodyPartInput: EditText
-    private lateinit var bodySubPartInput: EditText
-    private lateinit var type: EditText
+    private lateinit var bodyPartInput: AutoCompleteTextView
+    private lateinit var bodySubPartInput: AutoCompleteTextView
+    private lateinit var type: AutoCompleteTextView
     private lateinit var description: EditText
     private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,15 +38,23 @@ class AddExercise : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        add = findViewById(R.id.add)
-        back = findViewById(R.id.back)
-        textView = findViewById(R.id.name)
+
         nameInput = findViewById(R.id.nameInput)
+        description = findViewById(R.id.descriptionInput)
+        val bodyPartArray = resources.getStringArray(R.array.bodypart)
+        val bodySubPartArray = resources.getStringArray(R.array.bodysubpart)
+        val typeArray = resources.getStringArray(R.array.typ)
+        val arrayAdapterBodyPart = ArrayAdapter(this, R.layout.dropdown_item, bodyPartArray)
+        val arrayAdapterBodySubPart = ArrayAdapter(this, R.layout.dropdown_item, bodySubPartArray)
+        val arrayAdapterType = ArrayAdapter(this, R.layout.dropdown_item, typeArray)
         bodyPartInput = findViewById(R.id.partInput)
         bodySubPartInput = findViewById(R.id.subpartInput)
         type = findViewById(R.id.typeInput)
-        description = findViewById(R.id.descriptionInput)
-
+        bodyPartInput.setAdapter(arrayAdapterBodyPart)
+        bodySubPartInput.setAdapter(arrayAdapterBodySubPart)
+        type.setAdapter(arrayAdapterType)
+        add = findViewById(R.id.add)
+        back = findViewById(R.id.back)
 
         add.setOnClickListener {
 
