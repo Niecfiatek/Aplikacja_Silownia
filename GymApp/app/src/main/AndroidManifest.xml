@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TestFirebase"
         tools:targetApi="31">
         <activity
+            android:name=".Timer"
+            android:exported="false" />
+        <activity
             android:name=".Calendar"
             android:exported="false" />
         <activity
@@ -31,8 +34,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
-        <activity android:name=".AddExercise"></activity>
+            android:exported="true" />
+        <activity android:name=".AddExercise" />
     </application>
 
 </manifest>
