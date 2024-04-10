@@ -6,4 +6,28 @@
     <string name="register">Register</string>
     <string name="click_to_login">Click to login</string>
     <string name="click_to_register">Click to register</string>
+
+    <string-array name="bodypart">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Arms</item>
+        <item>Legs</item>
+        <item>Shoulders</item>
+        <item>Abdomen</item>
+    </string-array>
+
+    <string-array name="bodysubpart">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Arms</item>
+        <item>Legs</item>
+        <item>Shoulders</item>
+        <item>Abdomen</item>
+        <item></item>
+    </string-array>
+
+    <string-array name="typ">
+        <item>Maszyny</item>
+        <item>Wolne Hantle</item>
+    </string-array>
 </resources>
