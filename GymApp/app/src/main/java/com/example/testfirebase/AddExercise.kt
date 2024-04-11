@@ -4,6 +4,7 @@ import android.content.ClipDescription
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -92,4 +93,29 @@ class AddExercise : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    /*override fun onTouchEvent(touchEvent: MotionEvent): Boolean {
+        var x1 = 0f
+        var x2 = 0f
+        var y1 = 0f
+        var y2 = 0f
+        when (touchEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
+                x1 = touchEvent.x
+                y1 = touchEvent.y
+            }
+            MotionEvent.ACTION_UP -> {
+                x2 = touchEvent.x
+                y2 = touchEvent.y
+                if (x1 < x2) {
+                    val i = Intent(this@AddExercise, MainActivity::class.java)
+                    startActivity(i)
+                } else if (x1 > x2) {
+                    val i = Intent(this@AddExercise, Timer::class.java)
+                    startActivity(i)
+                }
+            }
+        }
+        return super.onTouchEvent(touchEvent)
+    }*/
 }
