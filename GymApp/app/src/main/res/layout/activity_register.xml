@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Already have account?"
+        android:text="Already have account? Sign in"
         android:textSize="10sp"
         android:textStyle="bold" />
 

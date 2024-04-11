@@ -147,12 +147,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58">
+        app:layout_constraintVertical_bias="0.657">
 
         <EditText
             android:id="@+id/descriptionInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"/>
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:gravity="top"
+            android:textSize="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

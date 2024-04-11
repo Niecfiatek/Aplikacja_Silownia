@@ -17,35 +17,53 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="@string/login"
-        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="@color/white"
+        android:textSize="34sp"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:hintEnabled="false">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
-            android:textSize="20dp"
-            android:hint="@string/email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:background="@drawable/input_bg"
+            android:hint="Email"
+            android:shadowColor="@color/white"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white"
+            android:textColorLink="@color/white"
+            android:textStyle="bold" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:hintEnabled="false"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
-            android:textSize="20dp"
-            android:hint="@string/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true" />
+            android:layout_height="match_parent"
+            android:background="@drawable/input_bg"
+            android:hint="@string/password"
+            android:shadowColor="@color/white"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white"
+            android:textColorLink="@color/white"
+            android:textStyle="bold" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,11 +85,11 @@
 
     <TextView
         android:textStyle="bold"
-        android:textSize="15sp"
+        android:textSize="10sp"
         android:gravity="center"
         android:id="@+id/registerNow"
         android:layout_marginTop="20dp"
-        android:text="Dont't have account yet?"
+        android:text="Dont't have account yet? Sign up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
