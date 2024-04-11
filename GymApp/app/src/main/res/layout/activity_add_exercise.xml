@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/gradient"
     tools:context=".AddExercise">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -26,6 +27,7 @@
 
         <EditText
             android:id="@+id/nameInput"
+            android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:inputType="none" />
+            android:inputType="none"
+            android:textSize="20dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:inputType="none" />
+            android:inputType="none"
+            android:textSize="20dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,7 +103,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:inputType="none" />
+            android:inputType="none"
+            android:textSize="20dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,6 +112,8 @@
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_regular"
+        app:backgroundTint="@null"
         android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,6 +126,8 @@
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_regular"
+        app:backgroundTint="@null"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,7 +152,7 @@
         <EditText
             android:id="@+id/descriptionInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20dp"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
