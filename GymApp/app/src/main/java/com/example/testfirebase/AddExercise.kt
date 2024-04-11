@@ -1,9 +1,7 @@
 package com.example.testfirebase
 
-import android.content.ClipDescription
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -22,7 +20,6 @@ import com.google.firebase.ktx.Firebase
 class AddExercise : AppCompatActivity() {
     private lateinit var add: Button
     private lateinit var back: Button
-    private lateinit var textView: TextView
     private lateinit var nameInput: EditText
     private lateinit var bodyPartInput: AutoCompleteTextView
     private lateinit var bodySubPartInput: AutoCompleteTextView
