@@ -1,7 +1,9 @@
 package com.example.testfirebase
 
 import CustomCountdownTimer
+import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -108,5 +110,31 @@ class Timer : AppCompatActivity() {
     override fun onDestroy() {
         customCountdownTimer.destroyTimer()
         super.onDestroy()
+    }
+
+    private var x1 = 0f
+    private var y1 = 0f
+    private var x2 = 0f
+    private var y2 = 0f
+
+    override fun onTouchEvent(touchEvent: MotionEvent): Boolean {
+        when (touchEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
+                x1 = touchEvent.x
+                y1 = touchEvent.y
+            }
+            MotionEvent.ACTION_UP -> {
+                x2 = touchEvent.x
+                y2 = touchEvent.y
+                if (x1 < x2) {
+                    val i = Intent(this@Timer, AddExercise::class.java)
+                    startActivity(i)
+                } else if (x1 > x2) {
+                    val i = Intent(this@Timer, Calendar::class.java)
+                    startActivity(i)
+                }
+            }
+        }
+        return super.onTouchEvent(touchEvent)
     }
 }

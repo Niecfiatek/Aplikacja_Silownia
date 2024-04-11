@@ -92,11 +92,12 @@ class AddExercise : AppCompatActivity() {
         }
     }
 
-    /*override fun onTouchEvent(touchEvent: MotionEvent): Boolean {
-        var x1 = 0f
-        var x2 = 0f
-        var y1 = 0f
-        var y2 = 0f
+    private var x1 = 0f
+    private var y1 = 0f
+    private var x2 = 0f
+    private var y2 = 0f
+
+    override fun onTouchEvent(touchEvent: MotionEvent): Boolean {
         when (touchEvent.action) {
             MotionEvent.ACTION_DOWN -> {
                 x1 = touchEvent.x
@@ -115,5 +116,5 @@ class AddExercise : AppCompatActivity() {
             }
         }
         return super.onTouchEvent(touchEvent)
-    }*/
+    }
 }
