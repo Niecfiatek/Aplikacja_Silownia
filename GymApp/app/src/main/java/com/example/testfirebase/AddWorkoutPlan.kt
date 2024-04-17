@@ -1,11 +1,10 @@
 package com.example.testfirebase
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.text.InputType
-import android.util.TypedValue
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
@@ -14,11 +13,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginBottom
-import androidx.core.view.marginEnd
-import androidx.core.view.marginStart
-import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
@@ -33,6 +27,7 @@ class AddWorkoutPlan : AppCompatActivity() {
     private lateinit var addEx: Button
     private lateinit var addWorkPlan: Button
     private lateinit var removeEx: Button
+    private lateinit var backBt: Button
     private lateinit var firstSpinner: Spinner
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var listofExercise: MutableList<String>
@@ -52,7 +47,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         addWorkPlan = findViewById(R.id.addPlan)
         removeEx = findViewById(R.id.removeExercise)
         firstSpinner = findViewById(R.id.exerciseSpinner)
-
+        backBt = findViewById(R.id.backButton)
         val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
         exerciseNamesTask.addOnSuccessListener { querySnapshot ->
             val exerciseNames = mutableListOf<String>()
@@ -75,6 +70,12 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
         addWorkPlan.setOnClickListener{
             showInputDialog()
+        }
+        backBt.setOnClickListener{
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
         }
 
     }
