@@ -105,20 +105,16 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
     }
     private fun addWorkPlan() {
-        val workoutPlan = hashMapOf<String, Any>() // Inicjalizujemy mapę, która będzie zawierać wszystkie ćwiczenia
-
-        // Iterujemy przez wszystkie spinnery i dodajemy ich zawartość do mapy workoutPlan
+        val workoutPlan = hashMapOf<String, Any>() 
         for (i in 0 until workoutPlanInputContainer.childCount) {
             val view = workoutPlanInputContainer.getChildAt(i)
             if (view is Spinner) {
                 val selectedExercise = view.selectedItem as String
-                val exerciseFieldName = "Exercise ${i + 1}" // Tworzymy nazwę pola na podstawie indeksu
-                workoutPlan[exerciseFieldName] = selectedExercise // Dodajemy ćwiczenie do mapy pod odpowiednią nazwą pola
+                val exerciseFieldName = "Exercise ${i + 1}"
+                workoutPlan[exerciseFieldName] = selectedExercise
             }
         }
-
-        // Tworzymy nowy dokument w kolekcji "WorkoutPlans" i ustawiamy mapę workoutPlan jako jego zawartość
-        db.collection("WorkoutPlans").document().set(workoutPlan)
+        db.collection("WorkoutPlans").document(/*Name of Workout Plan*/).set(workoutPlan)
             .addOnSuccessListener {
                 Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
             }
