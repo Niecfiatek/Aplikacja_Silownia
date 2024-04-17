@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".AddWorkoutPlan">
 
-    <!-- Layout for Spinner -->
     <LinearLayout
         android:id="@+id/workoutPlanInputContainer"
         android:layout_width="0dp"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- First Spinner -->
         <Spinner
             android:id="@+id/exerciseSpinner"
             android:layout_width="match_parent"
@@ -29,18 +27,17 @@
 
     </LinearLayout>
 
-    <!-- Button to add new Spinner -->
     <Button
         android:id="@+id/addExercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@id/workoutPlanInputContainer"
         app:layout_constraintStart_toStartOf="@id/workoutPlanInputContainer"
         app:layout_constraintTop_toBottomOf="@id/workoutPlanInputContainer"
         app:layout_constraintVertical_bias="0.1" />
 
-    <!-- Other buttons -->
     <Button
         android:id="@+id/removeExercise"
         android:layout_width="wrap_content"

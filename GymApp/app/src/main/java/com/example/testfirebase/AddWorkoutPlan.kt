@@ -83,15 +83,11 @@ class AddWorkoutPlan : AppCompatActivity() {
     private fun addSpinner() {
         val newSpinner = Spinner(this)
         newSpinner.adapter = adapter
-        // Kopiowanie ustawień pierwszego Spinnera
         newSpinner.background = firstSpinner.background
         newSpinner.prompt = firstSpinner.prompt
         newSpinner.setSelection(firstSpinner.selectedItemPosition)
 
-        // Pobranie marginesów z pierwszego Spinnera
         val params = firstSpinner.layoutParams as LinearLayout.LayoutParams
-
-        // Ustawienie marginesów dla nowego Spinnera
         val newParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT

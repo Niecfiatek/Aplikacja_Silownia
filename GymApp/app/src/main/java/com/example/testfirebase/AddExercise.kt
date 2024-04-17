@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-//import com.nk.myapplication.databinding.ActivityFirestoreBinding
+
 
 class AddExercise : AppCompatActivity() {
     private lateinit var add: Button
