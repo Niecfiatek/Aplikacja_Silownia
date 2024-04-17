@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -17,10 +18,11 @@ import kotlin.math.roundToInt
 class Timer : AppCompatActivity() {
     private lateinit var timeTxt: TextView
     private lateinit var circularProgressBar: ProgressBar
-    private val countdownTime = 160
-    private val clockTime = (countdownTime * 1000).toLong()
-    private val progressTime = (clockTime / 1000).toFloat()
+    private var countdownTime = 0
+    private var clockTime = (countdownTime * 1000).toLong()
+    private var progressTime = (clockTime / 1000).toFloat()
     private lateinit var customCountdownTimer : CustomCountdownTimer
+    private lateinit var editTextSeconds: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,19 +40,20 @@ class Timer : AppCompatActivity() {
         }
         timeTxt = findViewById(R.id.timeText)
         circularProgressBar = findViewById(R.id.circularProgresssBar)
+        editTextSeconds = findViewById(R.id.editTextSeconds)
 
         var secondsLeft = 0
         customCountdownTimer = object : CustomCountdownTimer(clockTime, 1000) {}
         customCountdownTimer.onTick = {millisUntilFinished ->
-                val second = (millisUntilFinished / 1000.0f).roundToInt()
-                if (second != secondsLeft) {
-                    secondsLeft = second
-                    timerFormat(
-                        secondsLeft,
-                        timeTxt
-                    )
-                }
+            val second = (millisUntilFinished / 1000.0f).roundToInt()
+            if (second != secondsLeft) {
+                secondsLeft = second
+                timerFormat(
+                    secondsLeft,
+                    timeTxt
+                )
             }
+        }
 
         customCountdownTimer.onFinish = {
             timerFormat(
@@ -63,16 +66,54 @@ class Timer : AppCompatActivity() {
         circularProgressBar.progress = progressTime.toInt()
         customCountdownTimer.startTimer()
 
+        val startBtn = findViewById<Button>(R.id.startBtn)
         val pauseBtn = findViewById<Button>(R.id.pauseBtn)
-        val resumeBtn = findViewById<Button>(R.id.resumeBtn)
         val resetBtn = findViewById<Button>(R.id.resetBtn)
 
-        pauseBtn.setOnClickListener {
-            customCountdownTimer.pauseTimer()
+        startBtn.setOnClickListener {
+            val inputSeconds = editTextSeconds.text.toString().toIntOrNull()
+            if (inputSeconds != null && inputSeconds > 0) {
+                countdownTime = inputSeconds
+                clockTime = (countdownTime * 1000).toLong()
+                progressTime = (clockTime / 1000).toFloat()
+                customCountdownTimer.destroyTimer()
+                customCountdownTimer = CustomCountdownTimer((countdownTime * 1000).toLong(), 1000) // Tworzenie nowego timera z nowym czasem
+                customCountdownTimer.onTick = { millisUntilFinished ->
+                    val second = (millisUntilFinished / 1000.0f).roundToInt()
+                    if (second != secondsLeft) {
+                        secondsLeft = second
+                        timerFormat(
+                            secondsLeft,
+                            timeTxt
+                        )
+                    }
+                }
+                customCountdownTimer.onFinish = {
+                    timerFormat(
+                        0,
+                        timeTxt
+                    )
+                }
+                circularProgressBar.max = progressTime.toInt()
+                circularProgressBar.progress = progressTime.toInt()
+                customCountdownTimer.startTimer()
+            }
         }
 
-        resumeBtn.setOnClickListener {
-            customCountdownTimer.resumeTimer()
+        var isPaused = false
+        pauseBtn.setOnClickListener {
+            if (!isPaused)
+            {
+                customCountdownTimer.pauseTimer()
+                pauseBtn.text = "Resume"
+                isPaused = true
+            }
+            else
+            {
+                customCountdownTimer.resumeTimer()
+                pauseBtn.text = "Pause"
+                isPaused = false
+            }
         }
 
         resetBtn.setOnClickListener {
@@ -80,6 +121,8 @@ class Timer : AppCompatActivity() {
             customCountdownTimer.restartTimer()
         }
     }
+
+
 
     private fun timerFormat(secondsLeft: Int, timeText: TextView) {
         circularProgressBar.progress = secondsLeft
