@@ -43,7 +43,7 @@ class AddWorkoutPlan : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        listofExercise = mutableListOf()
         workoutPlanInputContainer = findViewById(R.id.workoutPlanInputContainer)
         addEx = findViewById(R.id.addExercise)
         addWorkPlan = findViewById(R.id.addPlan)
@@ -75,7 +75,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
 
     }
-    
+
     private fun addSpinner() {
         val newSpinner = Spinner(this)
         newSpinner.adapter = adapter
@@ -105,28 +105,25 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
     }
     private fun addWorkPlan() {
-        //listofExercise.clear() // Wyczyść listę przed dodaniem nowych ćwiczeń
-        for (i in 0 until workoutPlanInputContainer.childCount - 1) {
+        val workoutPlan = hashMapOf<String, Any>() // Inicjalizujemy mapę, która będzie zawierać wszystkie ćwiczenia
+
+        // Iterujemy przez wszystkie spinnery i dodajemy ich zawartość do mapy workoutPlan
+        for (i in 0 until workoutPlanInputContainer.childCount) {
             val view = workoutPlanInputContainer.getChildAt(i)
             if (view is Spinner) {
                 val selectedExercise = view.selectedItem as String
-                listofExercise.add(selectedExercise)
+                val exerciseFieldName = "Exercise ${i + 1}" // Tworzymy nazwę pola na podstawie indeksu
+                workoutPlan[exerciseFieldName] = selectedExercise // Dodajemy ćwiczenie do mapy pod odpowiednią nazwą pola
             }
         }
 
-        // Przypisanie danych do bazy danych dla każdego ćwiczenia osobno
-        listofExercise.forEach { exercise ->
-            val workoutPlan = hashMapOf(
-                "Exercise" to exercise
-            )
-            // Dodanie danych do bazy danych
-            db.collection("WorkoutPlans").add(workoutPlan)
-                .addOnSuccessListener {
-                    Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this@AddWorkoutPlan, "Failed!", Toast.LENGTH_SHORT).show()
-                }
-        }
+        // Tworzymy nowy dokument w kolekcji "WorkoutPlans" i ustawiamy mapę workoutPlan jako jego zawartość
+        db.collection("WorkoutPlans").document().set(workoutPlan)
+            .addOnSuccessListener {
+                Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this@AddWorkoutPlan, "Failed!", Toast.LENGTH_SHORT).show()
+            }
     }
 }
