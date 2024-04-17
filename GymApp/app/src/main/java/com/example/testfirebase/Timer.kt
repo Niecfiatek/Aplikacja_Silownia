@@ -17,9 +17,9 @@ import kotlin.math.roundToInt
 class Timer : AppCompatActivity() {
     private lateinit var timeTxt: TextView
     private lateinit var circularProgressBar: ProgressBar
-    private val countdownTime = 10
+    private val countdownTime = 160
     private val clockTime = (countdownTime * 1000).toLong()
-    private val progressTime = clockTime.toInt()
+    private val progressTime = (clockTime / 1000).toFloat()
     private lateinit var customCountdownTimer : CustomCountdownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +76,7 @@ class Timer : AppCompatActivity() {
         }
 
         resetBtn.setOnClickListener {
-            circularProgressBar.progress = progressTime
+            circularProgressBar.progress = progressTime.toInt()
             customCountdownTimer.restartTimer()
         }
     }

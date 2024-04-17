@@ -19,7 +19,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.362"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/circular_progress_bar"/>
 
     <TextView
         android:id="@+id/timeText"
