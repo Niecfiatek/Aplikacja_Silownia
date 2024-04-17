@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var addEx: Button
     private lateinit var calendar: Button
     private lateinit var timer: Button
+    private lateinit var addPlan: Button
     private lateinit var textView:TextView
     private val user = auth.currentUser
 
@@ -80,6 +81,17 @@ class MainActivity : AppCompatActivity() {
 
         timer.setOnClickListener {
             val intent = Intent(applicationContext, Timer::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+        }
+
+        /// Workout Plan Button
+        addPlan = findViewById(R.id.addWorkout)
+        textView = findViewById(R.id.user_details)
+
+        addPlan.setOnClickListener {
+            val intent = Intent(applicationContext, AddWorkoutPlan::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
