@@ -6,6 +6,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.text.InputType
 import android.util.TypedValue
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import androidx.appcompat.app.AlertDialog
+
 
 class AddWorkoutPlan : AppCompatActivity() {
     private val db = Firebase.firestore
@@ -71,7 +74,7 @@ class AddWorkoutPlan : AppCompatActivity() {
             removeSpinner()
         }
         addWorkPlan.setOnClickListener{
-            addWorkPlan()
+            showInputDialog()
         }
 
     }
@@ -104,7 +107,7 @@ class AddWorkoutPlan : AppCompatActivity() {
             workoutPlanInputContainer.removeViewAt(lastIndex)
         }
     }
-    private fun addWorkPlan() {
+    private fun addWorkPlan(workoutPlanName: String) {
         val workoutPlan = hashMapOf<String, Any>() 
         for (i in 0 until workoutPlanInputContainer.childCount) {
             val view = workoutPlanInputContainer.getChildAt(i)
@@ -114,12 +117,33 @@ class AddWorkoutPlan : AppCompatActivity() {
                 workoutPlan[exerciseFieldName] = selectedExercise
             }
         }
-        db.collection("WorkoutPlans").document(/*Name of Workout Plan*/).set(workoutPlan)
+        db.collection("WorkoutPlans").document(workoutPlanName).set(workoutPlan)
             .addOnSuccessListener {
                 Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 Toast.makeText(this@AddWorkoutPlan, "Failed!", Toast.LENGTH_SHORT).show()
             }
+    }
+    private fun showInputDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter Workout Plan Name")
+
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val workoutPlanName = input.text.toString()
+            if (workoutPlanName.isNotEmpty()) {
+                addWorkPlan(workoutPlanName)
+            } else {
+                Toast.makeText(this, "Please enter a name for the workout plan", Toast.LENGTH_SHORT).show()
+            }
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+
+        builder.show()
     }
 }
