@@ -2,13 +2,11 @@ package com.example.testfirebase
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -53,7 +51,7 @@ class AddExercise : AppCompatActivity() {
         bodySubPartInput.setAdapter(arrayAdapterBodySubPart)
         type.setAdapter(arrayAdapterType)
         add = findViewById(R.id.add)
-        back = findViewById(R.id.back)
+        back = findViewById(R.id.backBtn)
 
         add.setOnClickListener {
 

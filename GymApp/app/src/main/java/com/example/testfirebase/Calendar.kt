@@ -7,12 +7,8 @@ import android.text.SpannableStringBuilder
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.DatePicker
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.testfirebase.databinding.ActivityCalendarBinding
-import com.example.testfirebase.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -28,7 +24,7 @@ class Calendar : AppCompatActivity() {
             setDate()
         }
 
-        back = findViewById(R.id.back)
+        back = findViewById(R.id.backBtn)
 
         back.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java).apply {

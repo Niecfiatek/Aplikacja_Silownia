@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,7 +17,7 @@ import kotlin.math.roundToInt
 class Timer : AppCompatActivity() {
     private lateinit var timeTxt: TextView
     private lateinit var circularProgressBar: ProgressBar
-    private val countdownTime = 60
+    private val countdownTime = 10
     private val clockTime = (countdownTime * 1000).toLong()
     private val progressTime = clockTime.toInt()
     private lateinit var customCountdownTimer : CustomCountdownTimer
@@ -60,8 +59,8 @@ class Timer : AppCompatActivity() {
             )
         }
 
-        circularProgressBar.max = progressTime
-        circularProgressBar.progress = progressTime
+        circularProgressBar.max = progressTime.toInt()
+        circularProgressBar.progress = progressTime.toInt()
         customCountdownTimer.startTimer()
 
         val pauseBtn = findViewById<Button>(R.id.pauseBtn)
@@ -137,4 +136,6 @@ class Timer : AppCompatActivity() {
         }
         return super.onTouchEvent(touchEvent)
     }
+
+
 }
