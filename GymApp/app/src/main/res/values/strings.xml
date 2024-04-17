@@ -29,6 +29,6 @@
 
     <string-array name="typ">
         <item>Maszyny</item>
-        <item>Wolne Hantle</item>
+        <item>Wolne Ciezary</item>
     </string-array>
 </resources>

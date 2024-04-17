@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".AddWorkoutPlan">
 
-    <!-- Layout for AutoCompleteTextView -->
+    <!-- Layout for Spinner -->
     <LinearLayout
         android:id="@+id/workoutPlanInputContainer"
         android:layout_width="0dp"
@@ -17,30 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- First AutoCompleteTextView -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout4"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        <!-- First Spinner -->
+        <Spinner
+            android:id="@+id/exerciseSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
-            android:hint="Exercise Name">
-
-            <AutoCompleteTextView
-                android:id="@+id/NameOfExerciseInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="none"
-                android:textSize="15dp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="40sp" />
 
     </LinearLayout>
 
-    <!-- Button to add new AutoCompleteTextView -->
+    <!-- Button to add new Spinner -->
     <Button
         android:id="@+id/addExercise"
         android:layout_width="wrap_content"
