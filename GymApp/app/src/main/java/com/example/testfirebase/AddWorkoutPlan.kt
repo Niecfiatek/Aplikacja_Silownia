@@ -65,11 +65,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
 
         addEx.setOnClickListener {
-<<<<<<< HEAD
             addSpinner()
-=======
-            addAutoCompleteTextView(firstExercise.text.toString())
->>>>>>> e8598868d3f3ff30cf69ca3a12cce7cd0f8b8f49
         }
         removeEx.setOnClickListener{
             removeSpinner()
@@ -79,8 +75,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
 
     }
-
-<<<<<<< HEAD
+    
     private fun addSpinner() {
         val newSpinner = Spinner(this)
         newSpinner.adapter = adapter
@@ -104,28 +99,6 @@ class AddWorkoutPlan : AppCompatActivity() {
     }
 
     private fun removeSpinner() {
-=======
-    private fun addAutoCompleteTextView(exerciseName: String) {
-        val textInputLayout = TextInputLayout(this)
-        val autoCompleteTextView = AutoCompleteTextView(this)
-        autoCompleteTextView.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        autoCompleteTextView.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-        autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
-        autoCompleteTextView.setHint("Exercise Name")
-        autoCompleteTextView.setText(exerciseName)
-        textInputLayout.addView(autoCompleteTextView)
-
-        // Ustawienie stylu dla TextInputLayout, aby odpowiadał pierwszemu TextInputLayout
-        textInputLayout.setHintTextAppearance(com.google.android.material.R.style.Widget_Material3_TextInputLayout_OutlinedBox_ExposedDropdownMenu)
-
-        workoutPlanInputContainer.addView(textInputLayout)
-    }
-
-    private fun removeAutoCompleteTextView() {
->>>>>>> e8598868d3f3ff30cf69ca3a12cce7cd0f8b8f49
         if (workoutPlanInputContainer.childCount > 1) {
             val lastIndex = workoutPlanInputContainer.childCount - 1
             workoutPlanInputContainer.removeViewAt(lastIndex)
