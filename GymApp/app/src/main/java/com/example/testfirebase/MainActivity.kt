@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
         else{
             textView.text = user.email
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
         /// AddExercise Button
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
         /// Calendar Button
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
         /// Timer Button
@@ -84,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
         /// Workout Plan Button
@@ -95,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
 

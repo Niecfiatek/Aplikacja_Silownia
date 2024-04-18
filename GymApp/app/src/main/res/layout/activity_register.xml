@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:shadowColor="#FFFFFF"
         android:text="@string/register"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textColorLink="@color/white"
         app:rippleColor="#FFFFFF"
         app:strokeColor="#FFFFFF"

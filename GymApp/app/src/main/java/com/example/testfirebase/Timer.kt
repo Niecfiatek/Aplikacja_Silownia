@@ -169,7 +169,7 @@ class Timer : AppCompatActivity() {
                 x2 = touchEvent.x
                 y2 = touchEvent.y
                 if (x1 < x2) {
-                    val i = Intent(this@Timer, AddExercise::class.java)
+                    val i = Intent(this@Timer, AddWorkoutPlan::class.java)
                     startActivity(i)
                 } else if (x1 > x2) {
                     val i = Intent(this@Timer, Calendar::class.java)

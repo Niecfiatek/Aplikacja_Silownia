@@ -87,6 +87,7 @@ class AddExercise : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
     }
 
@@ -108,7 +109,7 @@ class AddExercise : AppCompatActivity() {
                     val i = Intent(this@AddExercise, MainActivity::class.java)
                     startActivity(i)
                 } else if (x1 > x2) {
-                    val i = Intent(this@AddExercise, Timer::class.java)
+                    val i = Intent(this@AddExercise, AddWorkoutPlan::class.java)
                     startActivity(i)
                 }
             }

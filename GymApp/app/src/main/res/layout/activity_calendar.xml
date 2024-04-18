@@ -12,6 +12,7 @@
         android:id="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,6 +27,7 @@
         android:id="@+id/data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="Data"
         app:layout_constraintTop_toBottomOf="@id/calendar"
         android:layout_marginTop="10dp"
@@ -41,6 +43,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_regular"
         app:backgroundTint="@null"
+        android:textColor="@color/white"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

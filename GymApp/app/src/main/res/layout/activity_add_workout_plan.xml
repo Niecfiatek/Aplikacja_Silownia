@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddWorkoutPlan">
+    tools:context=".AddWorkoutPlan"
+    android:background="@drawable/gradient">
 
     <LinearLayout
         android:id="@+id/workoutPlanInputContainer"
@@ -29,8 +30,11 @@
 
     <Button
         android:id="@+id/addExercise"
+        android:background="@drawable/button_regular"
+        app:backgroundTint="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Add"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@id/workoutPlanInputContainer"
@@ -42,16 +46,23 @@
         android:id="@+id/removeExercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_regular"
+        android:textColor="@color/white"
         android:text="Remove"
+        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addExercise"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toBottomOf="@id/addExercise" />
 
     <Button
         android:id="@+id/addPlan"
+        android:background="@drawable/button_regular"
+        app:backgroundTint="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Add Plan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
@@ -61,8 +72,11 @@
 
     <Button
         android:id="@+id/backButton"
+        android:background="@drawable/button_regular"
+        app:backgroundTint="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.049"
