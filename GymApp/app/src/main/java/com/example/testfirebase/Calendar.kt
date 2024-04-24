@@ -16,12 +16,19 @@ import java.util.Locale
 class Calendar : AppCompatActivity() {
     private lateinit var binding: ActivityCalendarBinding
     private lateinit var back: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.calendar.setOnClickListener {
-            setDate()
+
+        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, dayOfMonth)
+            val dateFormat = "dd-MMMM-yyyy"
+            val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
+            val formattedDate = simpleDateFormat.format(calendar.time)
+            binding.data.text = SpannableStringBuilder.valueOf(formattedDate)
         }
 
         back = findViewById(R.id.backBtn)
@@ -31,13 +38,13 @@ class Calendar : AppCompatActivity() {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
         setToolbar()
     }
 
-    private fun setToolbar(){
+    private fun setToolbar() {
         supportActionBar?.title = "Cos"
         supportActionBar?.subtitle = "COS COS COS"
     }
