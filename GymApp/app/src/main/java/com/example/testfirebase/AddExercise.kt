@@ -69,7 +69,7 @@ class AddExercise : AppCompatActivity() {
             val p = bodyPartInput.text.toString().trim()
             val sp = bodySubPartInput.text.toString().trim()
             val t = type.text.toString().trim()
-            val m = mesureInput.toString().trim()
+            val m = mesureInput.text.toString().trim()
             val d = description.text.toString().trim()
             val exer = hashMapOf(
                 "Name of Exercise" to n,

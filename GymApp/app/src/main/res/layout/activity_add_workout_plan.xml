@@ -1,87 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddWorkoutPlan"
     android:background="@drawable/gradient">
 
     <LinearLayout
-        android:id="@+id/workoutPlanInputContainer"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="16dp">
 
-        <Spinner
-            android:id="@+id/exerciseSpinner"
+        <LinearLayout
+            android:id="@+id/workoutPlanInputContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/exerciseSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:textSize="40sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addExercise"
+            android:background="@drawable/button_regular"
+            app:backgroundTint="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Add"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/removeExercise"
+            android:background="@drawable/button_regular"
+            app:backgroundTint="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:textSize="40sp" />
+            android:text="Remove"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/addPlan"
+                android:background="@drawable/button_regular"
+                app:backgroundTint="@null"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add Plan"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/backButton"
+                android:background="@drawable/button_regular"
+                app:backgroundTint="@null"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/addExercise"
-        android:background="@drawable/button_regular"
-        app:backgroundTint="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Add"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@id/workoutPlanInputContainer"
-        app:layout_constraintStart_toStartOf="@id/workoutPlanInputContainer"
-        app:layout_constraintTop_toBottomOf="@id/workoutPlanInputContainer"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <Button
-        android:id="@+id/removeExercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_regular"
-        android:textColor="@color/white"
-        android:text="Remove"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addExercise" />
-
-    <Button
-        android:id="@+id/addPlan"
-        android:background="@drawable/button_regular"
-        app:backgroundTint="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Add Plan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/removeExercise"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <Button
-        android:id="@+id/backButton"
-        android:background="@drawable/button_regular"
-        app:backgroundTint="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/removeExercise" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
