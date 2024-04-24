@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.text.InputType
 import android.view.MotionEvent
+import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.firestore.core.View
 
 class AddWorkoutPlan : AppCompatActivity() {
     private val db = Firebase.firestore
@@ -48,7 +50,9 @@ class AddWorkoutPlan : AppCompatActivity() {
         removeEx = findViewById(R.id.removeExercise)
         firstSpinner = findViewById(R.id.exerciseSpinner)
         backBt = findViewById(R.id.backButton)
-        val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get() //to
+
+        val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
+
         exerciseNamesTask.addOnSuccessListener { querySnapshot ->
             val exerciseNames = mutableListOf<String>()
             for (document in querySnapshot.documents) {
@@ -60,6 +64,19 @@ class AddWorkoutPlan : AppCompatActivity() {
             adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, exerciseNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             firstSpinner.adapter = adapter
+        }
+
+        val exerciseMeasureTask: Task<QuerySnapshot> = exerciseCollection.get()
+        exerciseMeasureTask.addOnSuccessListener { querySnapshot ->
+            val measureInputs = mutableListOf<String>()
+            for (document in querySnapshot.documents) {
+                val mesureInput = document.getString("mesureInput")
+
+                mesureInput?.let {
+                    measureInputs.add(it)
+                }
+            }
+            val measureInputX = measureInputs.joinToString(separator = ", ")
         }
 
         addEx.setOnClickListener {
@@ -99,10 +116,26 @@ class AddWorkoutPlan : AppCompatActivity() {
         workoutPlanInputContainer.addView(newSpinner)
     }
 
+    private fun addMeasureInput(selectedItem: String) {
+        val measureInput = EditText(this)
+
+        if (selectedItem.equals("Time", ignoreCase = true)) {
+            measureInput.hint = "Enter time in seconds"
+        } else if (selectedItem.equals("Repeats", ignoreCase = true)) {
+            measureInput.hint = "Enter number of repeats"
+        } else {
+            measureInput.hint = "Enter number or time in seconds"
+        }
+        workoutPlanInputContainer.addView(measureInput)
+    }
+
+
     private fun removeSpinner() {
-        if (workoutPlanInputContainer.childCount > 1) {
-            val lastIndex = workoutPlanInputContainer.childCount - 1
-            workoutPlanInputContainer.removeViewAt(lastIndex)
+        if (workoutPlanInputContainer.childCount > 2) {
+            for (i in 0 until 2) {
+                val lastIndex = workoutPlanInputContainer.childCount - 1
+                workoutPlanInputContainer.removeViewAt(lastIndex)
+            }
         }
     }
     private fun addWorkPlan(workoutPlanName: String) {
@@ -124,6 +157,7 @@ class AddWorkoutPlan : AppCompatActivity() {
                 Toast.makeText(this@AddWorkoutPlan, "Failed!", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun showInputDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Enter Workout Plan Name")
