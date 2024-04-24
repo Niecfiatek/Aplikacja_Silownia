@@ -107,7 +107,8 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
     }
     private fun addWorkPlan(workoutPlanName: String) {
-        val workoutPlan = hashMapOf<String, Any>() 
+        val workoutPlan = hashMapOf<String, Any>()
+        workoutPlan["Name of Workout Plan"]=workoutPlanName
         for (i in 0 until workoutPlanInputContainer.childCount) {
             val view = workoutPlanInputContainer.getChildAt(i)
             if (view is Spinner) {
@@ -116,7 +117,7 @@ class AddWorkoutPlan : AppCompatActivity() {
                 workoutPlan[exerciseFieldName] = selectedExercise
             }
         }
-        db.collection("WorkoutPlans").document(workoutPlanName).set(workoutPlan)
+        db.collection("WorkoutPlans").document().set(workoutPlan)
             .addOnSuccessListener {
                 Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
             }
