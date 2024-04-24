@@ -1,46 +1,42 @@
 package com.example.testfirebase
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.CalendarView
-import android.widget.DatePicker
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.testfirebase.databinding.ActivityCalendarBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class Calendar : AppCompatActivity() {
     private lateinit var binding: ActivityCalendarBinding
     private lateinit var back: Button
     private lateinit var add: Button
     private lateinit var calendar: CalendarView
-    private val markedDates = mutableListOf<Long>()
+    private lateinit var plansTextView: TextView
+    private val plansList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCalendarBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_calendar)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
+        plansTextView = findViewById(R.id.plansTextView)
         calendar = findViewById(R.id.calendarView)
 
-        fetchCalendarDatesFromFirebase()
-
-
-        /*binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val calendar = Calendar.getInstance()
-            calendar.set(year, month, dayOfMonth)
-            val dateFormat = "dd.MM.yyyy"
-            val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
-            val formattedDate = simpleDateFormat.format(calendar.time)
-            binding.data.text = SpannableStringBuilder.valueOf(formattedDate)
-        }*/
+        //fetchCalendarDatesFromFirebase()
 
         back = findViewById(R.id.backBtn)
         add = findViewById(R.id.addBtn)
@@ -53,10 +49,14 @@ class Calendar : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
-        add.setOnClickListener{
-            val selectedDate = binding.data.text.toString()
-            showWorkoutPlansDialog(selectedDate)
+        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val selectedDate = String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
+            add.setOnClickListener{
+                showWorkoutPlansDialog(selectedDate)
+            }
         }
+
+        fetchCalendarDatesFromFirebase()
 
         setToolbar()
     }
@@ -73,36 +73,23 @@ class Calendar : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val dateString = document.getString("Date")
-                    dateString?.let {
-                        try {
-                            val date = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(it)
-                            date?.let {
-                                val calendar = Calendar.getInstance()
-                                calendar.time = it
-                                markedDates.add(calendar.timeInMillis)
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                    val planName = document.getString("Workout Plan Name")
+                    dateString?.let { date ->
+                        planName?.let { plan ->
+                            plansList.add("Name: $plan ----> Date: $date")
                         }
                     }
                 }
-                markDatesOnCalendar()
+                // Po pobraniu danych z Firebase wyświetlamy je pod kalendarzem
+                displayPlans()
             }
             .addOnFailureListener { exception ->
-                println("Błąd podczas pobierania dat z Firebase: $exception")
+                Log.e("CalendarActivity", "Error fetching data: $exception")
             }
     }
-
-    private fun markDatesOnCalendar() {
-        calendar.setOnDateChangeListener(null)
-
-        for (dateInMillis in markedDates) {
-            //calendar.setDate(dateInMillis, true, true)
-        }
-
-        /*calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val selectedDate = "$dayOfMonth.${month + 1}.$year"
-        }*/
+    private fun displayPlans() {
+        val plansText = plansList.joinToString("\n")
+        plansTextView.text = plansText
     }
 
     private fun showWorkoutPlansDialog(selectedDate: String) {
