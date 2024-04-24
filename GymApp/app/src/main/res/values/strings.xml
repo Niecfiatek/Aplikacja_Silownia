@@ -28,7 +28,12 @@
     </string-array>
 
     <string-array name="typ">
-        <item>Maszyny</item>
-        <item>Wolne Ciezary</item>
+        <item>Machines</item>
+        <item>Free weights</item>
+    </string-array>
+
+    <string-array name="mesure">
+        <item>Time</item>
+        <item>Repeats</item>
     </string-array>
 </resources>

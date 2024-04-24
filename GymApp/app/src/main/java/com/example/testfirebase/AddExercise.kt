@@ -24,6 +24,7 @@ class AddExercise : AppCompatActivity() {
     private lateinit var bodyPartInput: AutoCompleteTextView
     private lateinit var bodySubPartInput: AutoCompleteTextView
     private lateinit var type: AutoCompleteTextView
+    private lateinit var mesureInput: AutoCompleteTextView
     private lateinit var description: EditText
     private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,18 +39,27 @@ class AddExercise : AppCompatActivity() {
 
         nameInput = findViewById(R.id.nameInput)
         description = findViewById(R.id.descriptionInput)
+
         val bodyPartArray = resources.getStringArray(R.array.bodypart)
         val bodySubPartArray = resources.getStringArray(R.array.bodysubpart)
         val typeArray = resources.getStringArray(R.array.typ)
+        val mesureArray = resources.getStringArray(R.array.mesure)
+
         val arrayAdapterBodyPart = ArrayAdapter(this, R.layout.dropdown_item, bodyPartArray)
         val arrayAdapterBodySubPart = ArrayAdapter(this, R.layout.dropdown_item, bodySubPartArray)
         val arrayAdapterType = ArrayAdapter(this, R.layout.dropdown_item, typeArray)
+        val arrayAdapterMesure = ArrayAdapter(this, R.layout.dropdown_item, mesureArray)
+
         bodyPartInput = findViewById(R.id.partInput)
         bodySubPartInput = findViewById(R.id.subpartInput)
         type = findViewById(R.id.typeInput)
+        mesureInput = findViewById(R.id.mesureInput)
+
         bodyPartInput.setAdapter(arrayAdapterBodyPart)
         bodySubPartInput.setAdapter(arrayAdapterBodySubPart)
         type.setAdapter(arrayAdapterType)
+        mesureInput.setAdapter(arrayAdapterMesure)
+
         add = findViewById(R.id.add)
         back = findViewById(R.id.backBtn)
 
@@ -59,12 +69,14 @@ class AddExercise : AppCompatActivity() {
             val p = bodyPartInput.text.toString().trim()
             val sp = bodySubPartInput.text.toString().trim()
             val t = type.text.toString().trim()
+            val m = mesureInput.toString().trim()
             val d = description.text.toString().trim()
             val exer = hashMapOf(
                 "Name of Exercise" to n,
                 "Body part" to p,
                 "Body sub-part" to sp,
                 "Type of training" to t,
+                "Mesure type" to m,
                 "Description" to d
             )
 
@@ -75,6 +87,7 @@ class AddExercise : AppCompatActivity() {
                     bodyPartInput.text.clear()
                     bodySubPartInput.text.clear()
                     type.text.clear()
+                    mesureInput.text.clear()
                     description.text.clear()
                 }
                 .addOnFailureListener {
