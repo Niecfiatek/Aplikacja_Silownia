@@ -20,7 +20,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.appcompat.app.AlertDialog
 
-
 class AddWorkoutPlan : AppCompatActivity() {
     private val db = Firebase.firestore
     private val exerciseCollection = db.collection("Exercise")
@@ -49,7 +48,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         removeEx = findViewById(R.id.removeExercise)
         firstSpinner = findViewById(R.id.exerciseSpinner)
         backBt = findViewById(R.id.backButton)
-        val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
+        val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get() //to
         exerciseNamesTask.addOnSuccessListener { querySnapshot ->
             val exerciseNames = mutableListOf<String>()
             for (document in querySnapshot.documents) {

@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     private lateinit var b: Button
     private lateinit var addEx: Button
+    private lateinit var editEx: Button
     private lateinit var calendar: Button
     private lateinit var timer: Button
     private lateinit var addPlan: Button
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         b = findViewById(R.id.logout)
+        //editEx = findViewById(R.id.editExercise)
         textView = findViewById(R.id.user_details)
         if(user == null){
             val intent = Intent(applicationContext, Login::class.java).apply {
@@ -103,6 +105,29 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
+        /// Workout Plan Button
+        addPlan = findViewById(R.id.addWorkout)
+        textView = findViewById(R.id.user_details)
+
+        addPlan.setOnClickListener {
+            val intent = Intent(applicationContext, AddWorkoutPlan::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        }
+
+        /// Edit Exercise
+        editEx = findViewById(R.id.editExercise)
+        textView = findViewById(R.id.user_details)
+
+        editEx.setOnClickListener {
+            val intent = Intent(applicationContext, EditExercise::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        }
 
     }
 
