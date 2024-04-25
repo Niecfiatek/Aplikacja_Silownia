@@ -82,22 +82,21 @@ class AddWorkoutPlan : AppCompatActivity() {
         addEx.setOnClickListener {
             addSpinner()
         }
-        removeEx.setOnClickListener{
+        removeEx.setOnClickListener {
             removeSpinner()
         }
-        addWorkPlan.setOnClickListener{
+        addWorkPlan.setOnClickListener {
             showInputDialog()
         }
-        backBt.setOnClickListener{
+        backBt.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
     }
-
     private fun addSpinner() {
         val newSpinner = Spinner(this)
         newSpinner.adapter = adapter
