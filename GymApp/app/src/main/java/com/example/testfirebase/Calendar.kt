@@ -48,15 +48,13 @@ class Calendar : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
-
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            fetchCalendarDatesFromFirebase(year, month)
             val selectedDate = String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
             add.setOnClickListener{
                 showWorkoutPlansDialog(selectedDate)
             }
         }
-
-        fetchCalendarDatesFromFirebase()
 
         setToolbar()
     }
@@ -66,25 +64,39 @@ class Calendar : AppCompatActivity() {
         supportActionBar?.subtitle = "COS COS COS"
     }
 
-    private fun fetchCalendarDatesFromFirebase() {
+    private fun fetchCalendarDatesFromFirebase(selectedYear: Int, selectedMonth: Int) {
         val db = FirebaseFirestore.getInstance()
         db.collection("CalendarCollection")
             .get()
             .addOnSuccessListener { result ->
+                plansList.clear() // Wyczyść listę przed dodaniem nowych danych
                 for (document in result) {
                     val dateString = document.getString("Date")
-                    val planName = document.getString("Workout Plan Name")
                     dateString?.let { date ->
-                        planName?.let { plan ->
-                            plansList.add("Name: $plan ----> Date: $date")
+                        val parts = date.split(".")
+                        if (parts.size == 3) {
+                            val day = parts[0].toIntOrNull()
+                            val month = parts[1].toIntOrNull()
+                            val year = parts[2].toIntOrNull()
+                            if (day != null && month != null && year != null) {
+                                if (year == selectedYear && month == selectedMonth + 1) { // Miesiące w kalendarzu są indeksowane od zera
+                                    val planName = document.getString("Workout Plan Name")
+                                    planName?.let { plan ->
+                                        plansList.add("Name: $plan ----> Date: $date")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                // Po pobraniu danych z Firebase wyświetlamy je pod kalendarzem
-                displayPlans()
+                if (plansList.isEmpty()) {
+                    plansTextView.text = "Brak planów"
+                } else {
+                    displayPlans()
+                }
             }
             .addOnFailureListener { exception ->
-                Log.e("CalendarActivity", "Error fetching data: $exception")
+                Log.e("MyCalendarActivity", "Error fetching data: $exception")
             }
     }
     private fun displayPlans() {
