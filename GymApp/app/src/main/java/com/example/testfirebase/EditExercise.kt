@@ -123,12 +123,12 @@ class EditExercise : AppCompatActivity() {
                 query.get().addOnSuccessListener { querySnapshot ->
                     for (document in querySnapshot) {
                         val exerciseData = document.data
-                        nameInput.setText(exerciseData["Name of Exercise"].toString())
-                        description.setText(exerciseData["Description"].toString())
-                        bodyPartInput.setText(exerciseData["Body part"].toString())
-                        bodySubPartInput.setText(exerciseData["Body sub-part"].toString())
-                        type.setText(exerciseData["Type"].toString())
-                        mesureInput.setText(exerciseData["Mesure"].toString())
+                        nameInput.setText(exerciseData["Name of Exercise"]?.toString() ?: "...")
+                        description.setText(exerciseData["Description"]?.toString() ?: "...")
+                        bodyPartInput.setText(exerciseData["Body part"]?.toString() ?: "...")
+                        bodySubPartInput.setText(exerciseData["Body sub-part"]?.toString() ?: "...")
+                        type.setText(exerciseData["Type"]?.toString() ?: "...")
+                        mesureInput.setText(exerciseData["Mesure"]?.toString() ?: "...")
                     }
 
                     // Aktualizacja adapterów dla pozostałych rozwijanych list
@@ -155,6 +155,7 @@ class EditExercise : AppCompatActivity() {
                 // Do nothing
             }
         }
+
 
         val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
         exerciseNamesTask.addOnSuccessListener { querySnapshot ->
