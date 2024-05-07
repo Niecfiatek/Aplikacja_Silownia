@@ -61,7 +61,7 @@ class AddWorkoutPlan : AppCompatActivity() {
                     exerciseNames.add(it)
                 }
             }
-            adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, exerciseNames)
+            adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, exerciseNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             firstSpinner.adapter = adapter
         }
@@ -97,6 +97,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
 
     }
+
     private fun addSpinner() {
         val newSpinner = Spinner(this)
         newSpinner.adapter = adapter
@@ -111,8 +112,14 @@ class AddWorkoutPlan : AppCompatActivity() {
         )
         newParams.marginStart = params.marginStart
         newParams.marginEnd = params.marginEnd
+        newParams.topMargin = 10.dpToPx() // Ustawienie odstępu 10dp
         newSpinner.layoutParams = newParams
         workoutPlanInputContainer.addView(newSpinner)
+    }
+
+    fun Int.dpToPx(): Int {
+        val density = resources.displayMetrics.density
+        return (this * density).toInt()
     }
 
     private fun addMeasureInput(selectedItem: String) {

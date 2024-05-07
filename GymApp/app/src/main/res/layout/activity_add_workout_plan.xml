@@ -20,6 +20,7 @@
             android:orientation="vertical">
 
             <Spinner
+                android:background="@drawable/style_spinner"
                 android:id="@+id/exerciseSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
