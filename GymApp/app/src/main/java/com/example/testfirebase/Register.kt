@@ -20,8 +20,9 @@ import com.google.firebase.auth.FirebaseAuth
 
 class Register : AppCompatActivity() {
 
-    lateinit var editTextMail:TextInputEditText
+    lateinit var editTextEmail:TextInputEditText
     lateinit var editTextPassword:TextInputEditText
+    lateinit var editTextConfirmPassword:TextInputEditText
     lateinit var buttonReg:Button
     lateinit var auth:FirebaseAuth
     lateinit var progressBar:ProgressBar
@@ -50,8 +51,9 @@ class Register : AppCompatActivity() {
             insets
         }
         auth = FirebaseAuth.getInstance()
-        editTextMail = findViewById(R.id.email)
+        editTextEmail = findViewById(R.id.email)
         editTextPassword = findViewById(R.id.password)
+        editTextConfirmPassword = findViewById(R.id.repeatpassword)
         buttonReg = findViewById(R.id.btn_register)
         progressBar = findViewById(R.id.progressBar)
         textView = findViewById(R.id.loginNow)
@@ -72,8 +74,10 @@ class Register : AppCompatActivity() {
                 progressBar.visibility = View.VISIBLE
                 var email:String
                 var password:String
-                email = editTextMail.getText().toString()
+                var confirmpassword:String
+                email = editTextEmail.getText().toString()
                 password = editTextPassword.getText().toString()
+                confirmpassword = editTextConfirmPassword.getText().toString()
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show()
@@ -88,7 +92,7 @@ class Register : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnSuccessListener() { task ->
                         //progressBar.visibility = View.GONE
-                        if (task.user != null) {
+                        if (task.user != null && confirmpassword==password) {
                             val intent = Intent(applicationContext, MainActivity::class.java).apply {
                                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             }
@@ -97,7 +101,7 @@ class Register : AppCompatActivity() {
                             Toast.makeText(baseContext, "Account created", Toast.LENGTH_SHORT).show()
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(baseContext, "Different password.", Toast.LENGTH_SHORT).show()
                         }
                     }
 

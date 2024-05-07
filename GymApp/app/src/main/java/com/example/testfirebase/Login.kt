@@ -81,7 +81,6 @@ class Login : AppCompatActivity() {
                         Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
                         progressBar.visibility = View.GONE
                     }
-
                 }
         }
     }
