@@ -82,7 +82,8 @@ class Calendar : AppCompatActivity() {
                                 if (year == selectedYear && month == selectedMonth + 1) { // Miesiące w kalendarzu są indeksowane od zera
                                     val planName = document.getString("Workout Plan Name")
                                     planName?.let { plan ->
-                                        plansList.add("Name: $plan      Date: $date")
+                                        //val formattedName = plan.trim().padEnd(8)
+                                        plansList.add("Name: $plan \nDate: $date")
                                     }
                                 }
                             }
