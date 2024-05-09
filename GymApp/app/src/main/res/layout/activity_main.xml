@@ -30,8 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -40,11 +38,11 @@
         app:layout_constraintVertical_bias="0.126" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/menuWorkoutPlan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_main_screen"
-        android:text="Logout"
+        android:text="Workout Plan\nmenu"
         android:textColor="@color/white"
         android:textSize="15dp"
         app:backgroundTint="@null"
@@ -53,7 +51,7 @@
         app:layout_constraintHorizontal_bias="0.839"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
+        app:layout_constraintVertical_bias="0.24" />
 
     <Button
         android:id="@+id/calendar"
@@ -69,14 +67,14 @@
         app:layout_constraintHorizontal_bias="0.839"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.555" />
+        app:layout_constraintVertical_bias="0.552" />
 
     <Button
-        android:id="@+id/addExercise"
+        android:id="@+id/menuExercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_main_screen"
-        android:text="Add Exercise"
+        android:text="Exercise Menu"
         android:textColor="@color/white"
         android:textSize="15dp"
         app:backgroundTint="@null"
@@ -85,7 +83,7 @@
         app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.259" />
+        app:layout_constraintVertical_bias="0.24" />
 
     <Button
         android:id="@+id/timer"
@@ -101,38 +99,22 @@
         app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
+        app:layout_constraintVertical_bias="0.552" />
 
     <Button
-        android:id="@+id/addWorkout"
+        android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_main_screen"
-        android:text="Add Workout\nPlan"
+        android:background="@drawable/button_login"
+        android:text="Logout"
         android:textColor="@color/white"
         android:textSize="15dp"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.839"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.258" />
-
-    <Button
-        android:id="@+id/editExercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_main_screen"
-        android:text="Edit\nExercise"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.555" />
+        app:layout_constraintVertical_bias="0.898" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,11 +18,10 @@ class MainActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private lateinit var b: Button
-    private lateinit var addEx: Button
-    private lateinit var editEx: Button
+    private lateinit var menuExercise: Button
     private lateinit var calendar: Button
     private lateinit var timer: Button
-    private lateinit var addPlan: Button
+    private lateinit var menuWorkout: Button
     private lateinit var textView:TextView
     private val user = auth.currentUser
 
@@ -57,12 +56,12 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
-        /// AddExercise Button
-        addEx = findViewById(R.id.addExercise)
+        /// MenuExercise Button
+        menuExercise = findViewById(R.id.menuExercise)
         textView = findViewById(R.id.user_details)
 
-        addEx.setOnClickListener {
-            val intent = Intent(applicationContext, AddExercise::class.java).apply {
+        menuExercise.setOnClickListener {
+            val intent = Intent(applicationContext, MenuExercise::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
@@ -93,36 +92,12 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
-        /// Workout Plan Button
-        addPlan = findViewById(R.id.addWorkout)
+        /// Menu Workout Plan Button
+        menuWorkout = findViewById(R.id.menuWorkoutPlan)
         textView = findViewById(R.id.user_details)
 
-        addPlan.setOnClickListener {
-            val intent = Intent(applicationContext, AddWorkoutPlan::class.java).apply {
-                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            }
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
-        }
-
-        /// Workout Plan Button
-        addPlan = findViewById(R.id.addWorkout)
-        textView = findViewById(R.id.user_details)
-
-        addPlan.setOnClickListener {
-            val intent = Intent(applicationContext, AddWorkoutPlan::class.java).apply {
-                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            }
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
-        }
-
-        /// Edit Exercise
-        editEx = findViewById(R.id.editExercise)
-        textView = findViewById(R.id.user_details)
-
-        editEx.setOnClickListener {
-            val intent = Intent(applicationContext, EditExercise::class.java).apply {
+        menuWorkout.setOnClickListener {
+            val intent = Intent(applicationContext, MenuWorkoutPlan::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)

@@ -15,6 +15,15 @@
         android:theme="@style/Theme.TestFirebase"
         tools:targetApi="31">
         <activity
+            android:name=".EditWorkoutPlan"
+            android:exported="false" />
+        <activity
+            android:name=".MenuWorkoutPlan"
+            android:exported="false" />
+        <activity
+            android:name=".MenuExercise"
+            android:exported="false" />
+        <activity
             android:name=".EditExercise"
             android:exported="false" />
         <activity
