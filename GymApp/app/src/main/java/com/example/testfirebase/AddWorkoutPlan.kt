@@ -70,8 +70,7 @@ class AddWorkoutPlan : AppCompatActivity() {
         exerciseMeasureTask.addOnSuccessListener { querySnapshot ->
             val measureInputs = mutableListOf<String>()
             for (document in querySnapshot.documents) {
-                val mesureInput = document.getString("mesureInput")
-
+                val mesureInput = document.getString("Mesure")
                 mesureInput?.let {
                     measureInputs.add(it)
                 }
@@ -115,6 +114,24 @@ class AddWorkoutPlan : AppCompatActivity() {
         newParams.topMargin = 10.dpToPx() // Ustawienie odstępu 10dp
         newSpinner.layoutParams = newParams
         workoutPlanInputContainer.addView(newSpinner)
+
+        // Dodanie nasłuchiwacza zdarzeń do Spinnera
+        newSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: android.view.View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = adapter.getItem(position)
+                selectedItem?.let {
+                    addMeasureInput(it)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
 
     fun Int.dpToPx(): Int {
@@ -123,8 +140,8 @@ class AddWorkoutPlan : AppCompatActivity() {
     }
 
     private fun addMeasureInput(selectedItem: String) {
+        println("value = " + selectedItem)
         val measureInput = EditText(this)
-
         if (selectedItem.equals("Time", ignoreCase = true)) {
             measureInput.hint = "Enter time in seconds"
         } else if (selectedItem.equals("Repeats", ignoreCase = true)) {
