@@ -21,6 +21,7 @@ class Calendar : AppCompatActivity() {
     private lateinit var add: Button
     private lateinit var calendar: CalendarView
     private lateinit var plansTextView: TextView
+    private lateinit var data: TextView
     private val plansList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,7 @@ class Calendar : AppCompatActivity() {
             insets
         }
 
+        data = findViewById(R.id.dataview)
         plansTextView = findViewById(R.id.plansTextView)
         calendar = findViewById(R.id.calendarView)
 
@@ -49,6 +51,7 @@ class Calendar : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            data.text=String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
             fetchCalendarDatesFromFirebase(year, month, dayOfMonth)
             val selectedDate = String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
             add.setOnClickListener{
@@ -83,7 +86,7 @@ class Calendar : AppCompatActivity() {
                                     val planName = document.getString("Workout Plan Name")
                                     planName?.let { plan ->
                                         //val formattedName = plan.trim().padEnd(8)
-                                        plansList.add("Name: $plan \nDate: $date")
+                                        plansList.add("Name of training: $plan\n")
                                     }
                                 }
                             }

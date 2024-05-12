@@ -39,13 +39,14 @@
         app:layout_constraintVertical_bias="0.216">
 
         <TextView
+            android:id="@+id/dataview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
-            android:text="TRENINGI"
+            android:text="Choose date"
             android:textAlignment="center"
-            android:textSize="28sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
