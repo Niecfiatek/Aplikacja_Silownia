@@ -49,7 +49,7 @@ class Calendar : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            fetchCalendarDatesFromFirebase(year, month)
+            fetchCalendarDatesFromFirebase(year, month, dayOfMonth)
             val selectedDate = String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
             add.setOnClickListener{
                 showWorkoutPlansDialog(selectedDate)
@@ -64,7 +64,7 @@ class Calendar : AppCompatActivity() {
         supportActionBar?.subtitle = "COS COS COS"
     }
 
-    private fun fetchCalendarDatesFromFirebase(selectedYear: Int, selectedMonth: Int) {
+    private fun fetchCalendarDatesFromFirebase(selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
         val db = FirebaseFirestore.getInstance()
         db.collection("CalendarCollection")
             .get()
@@ -79,7 +79,7 @@ class Calendar : AppCompatActivity() {
                             val month = parts[1].toIntOrNull()
                             val year = parts[2].toIntOrNull()
                             if (day != null && month != null && year != null) {
-                                if (year == selectedYear && month == selectedMonth + 1) { // Miesiące w kalendarzu są indeksowane od zera
+                                if (year == selectedYear && month == selectedMonth + 1 && selectedDay == day) {
                                     val planName = document.getString("Workout Plan Name")
                                     planName?.let { plan ->
                                         //val formattedName = plan.trim().padEnd(8)
