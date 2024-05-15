@@ -18,6 +18,7 @@ class MenuExercise : AppCompatActivity() {
 
     private lateinit var addExercise: Button
     private lateinit var editExercise: Button
+    private lateinit var back: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,9 +29,10 @@ class MenuExercise : AppCompatActivity() {
             insets
         }
 
-        /// AddExercise Button
+        /// Back Button
         addExercise = findViewById(R.id.addExercise)
 
+        // Add Exercise
         addExercise.setOnClickListener {
             val intent = Intent(applicationContext, AddExercise::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -44,6 +46,16 @@ class MenuExercise : AppCompatActivity() {
 
         editExercise.setOnClickListener {
             val intent = Intent(applicationContext, EditExercise::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        }
+
+        back = findViewById(R.id.backBt)
+
+        back.setOnClickListener{
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)

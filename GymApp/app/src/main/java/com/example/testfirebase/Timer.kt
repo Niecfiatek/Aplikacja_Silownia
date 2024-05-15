@@ -29,6 +29,8 @@ class Timer : AppCompatActivity() {
 
     private lateinit var editTextSeconds: EditText
 
+    private lateinit var back: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -61,6 +63,8 @@ class Timer : AppCompatActivity() {
         circularProgressBar = findViewById(R.id.circularProgresssBar)
 
         editTextSeconds = findViewById(R.id.editTextSeconds)
+
+        back = findViewById(R.id.backBt)
 
 
         var secondsLeft = 0
@@ -208,6 +212,14 @@ class Timer : AppCompatActivity() {
 
             customCountdownTimer.restartTimer()
 
+        }
+
+        back.setOnClickListener{
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
     }
