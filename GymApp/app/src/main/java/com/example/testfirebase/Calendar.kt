@@ -8,12 +8,14 @@ import android.view.MotionEvent
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.testfirebase.databinding.ActivityCalendarBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
 
 class Calendar : AppCompatActivity() {
     private lateinit var binding: ActivityCalendarBinding
@@ -51,12 +53,37 @@ class Calendar : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            data.text=String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
+            val selectedDateText = String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
+            data.text = selectedDateText
+
             fetchCalendarDatesFromFirebase(year, month, dayOfMonth)
-            val selectedDate = String.format("%02d.%02d.%d", dayOfMonth, month + 1, year)
             add.setOnClickListener{
-                showWorkoutPlansDialog(selectedDate)
+                showWorkoutPlansDialog(selectedDateText)
             }
+
+            val selectedCalendar = Calendar.getInstance()
+            selectedCalendar.set(year, month, dayOfMonth)
+            val today = Calendar.getInstance()
+
+
+            plansTextView.setOnClickListener{
+                if(today.get(Calendar.DAY_OF_MONTH)==dayOfMonth && today.get(Calendar.MONTH)+1==month+1 && today.get(Calendar.YEAR)==year && plansTextView.text!="Brak wyników" && plansTextView.text!="") {
+                    val intent = Intent(applicationContext, ActiveWorkout::class.java).apply {
+                        flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        val trainingName = plansTextView.text.toString().substringAfter(": ").trim()
+                        putExtra("trainingName", trainingName)
+                    }
+                    startActivity(intent)
+                    finish()
+                }
+                else
+                {
+
+                }
+            }
+
+
+
         }
 
         setToolbar()
@@ -85,8 +112,7 @@ class Calendar : AppCompatActivity() {
                                 if (year == selectedYear && month == selectedMonth + 1 && selectedDay == day) {
                                     val planName = document.getString("Workout Plan Name")
                                     planName?.let { plan ->
-                                        //val formattedName = plan.trim().padEnd(8)
-                                        plansList.add("Name of training: $plan\n")
+                                        plansList.add("Name of training: $plan")
                                     }
                                 }
                             }

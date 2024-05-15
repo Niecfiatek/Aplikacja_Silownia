@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_main_screen"
-        android:text="Workout Plan\nmenu"
+        android:text="Workout Plan\nMenu"
         android:textColor="@color/white"
         android:textSize="15dp"
         app:backgroundTint="@null"
