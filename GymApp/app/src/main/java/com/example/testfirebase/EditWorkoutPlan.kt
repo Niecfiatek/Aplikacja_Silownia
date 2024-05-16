@@ -24,7 +24,6 @@ class EditWorkoutPlan : AppCompatActivity() {
     private val workoutCollection = db.collection("WorkoutPlans")
     private val exerciseCollection = db.collection("Exercise")
     private lateinit var listofExercise: MutableList<String>
-    private lateinit var exerciseSpinner: Spinner
     private lateinit var workoutSpinner: Spinner
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var buttonBack: Button
@@ -164,11 +163,6 @@ class EditWorkoutPlan : AppCompatActivity() {
                                 // Dodaj spinner do listy poprzednich spinnerów
                                 previousSpinners.add(spinner)
                             }
-
-                            // Tutaj możesz wykorzystać listę ćwiczeń do dalszej obróbki
-                            //exercisesList.forEachIndexed { index, exercise ->
-                            //    println("Exercise ${index + 1}: $exercise")
-                            //}
                         } else {
                             Toast.makeText(this@EditWorkoutPlan, "Brak danych dla wybranego planu treningowego", Toast.LENGTH_SHORT).show()
                         }
@@ -208,23 +202,17 @@ class EditWorkoutPlan : AppCompatActivity() {
         builder.setTitle("Deleting Workout...")
         builder.setMessage("Do you really want to delete workout '$workoutName'?")
 
-        // Dodaj przycisk "Tak", który potwierdzi usunięcie planu
         builder.setPositiveButton("Yes") { dialog, which ->
-            // Usuń obecnie wybrany plan treningowy z bazy danych
             deleteWorkoutPlanFromDatabase(workoutName)
 
-            // Usuń zapamiętany indeks i odśwież aktywność
             selectedWorkoutIndex = 0
             recreate()
         }
 
-        // Dodaj przycisk "Nie", który anuluje operację usuwania
         builder.setNegativeButton("No") { dialog, which ->
-            // Zamknij okno dialogowe
             dialog.dismiss()
         }
 
-        // Wyświetl okno dialogowe
         builder.show()
     }
 
@@ -286,7 +274,6 @@ class EditWorkoutPlan : AppCompatActivity() {
                 val document = documents.documents[0]
                 val workoutId = document.id
 
-                // Utwórz mapę zaktualizowanych danych
                 val updatedData = mutableMapOf<String, Any>()
 
                 // Zaktualizuj nazwę planu treningowego

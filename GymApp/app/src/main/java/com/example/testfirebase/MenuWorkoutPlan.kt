@@ -15,6 +15,7 @@ class MenuWorkoutPlan : AppCompatActivity() {
     private lateinit var addPlan: Button
     private lateinit var editPlan: Button
     private lateinit var back: Button
+    private lateinit var startWorkout: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,6 +52,17 @@ class MenuWorkoutPlan : AppCompatActivity() {
 
         back.setOnClickListener{
             val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        }
+
+        /// Start Workout Button
+        startWorkout = findViewById(R.id.StartWorkout)
+
+        startWorkout.setOnClickListener {
+            val intent = Intent(applicationContext, SelectWorkout::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
