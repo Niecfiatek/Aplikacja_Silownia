@@ -115,9 +115,10 @@ class AddWorkoutPlan : AppCompatActivity() {
                 val selectedExercise = view.selectedItem as String
                 val exerciseFieldName = "Exercise ${i + 1}"
                 workoutPlan[exerciseFieldName] = selectedExercise
+                workoutPlan["Name of Workout Plan"] = workoutPlanName
             }
         }
-        db.collection("WorkoutPlans").document(workoutPlanName).set(workoutPlan)
+        db.collection("WorkoutPlans").document().set(workoutPlan)
             .addOnSuccessListener {
                 Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
             }

@@ -2,8 +2,11 @@ package com.example.testfirebase
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.CalendarView
@@ -11,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.testfirebase.databinding.ActivityCalendarBinding
@@ -78,7 +82,7 @@ class Calendar : AppCompatActivity() {
                 }
                 else
                 {
-
+                    showErrorDialog();
                 }
             }
 
@@ -87,6 +91,25 @@ class Calendar : AppCompatActivity() {
         }
 
         setToolbar()
+    }
+
+    private fun showErrorDialog() {
+        val errorConstraintLayout = findViewById<ConstraintLayout>(R.id.errorConstraintLayout)
+        val view = LayoutInflater.from(this).inflate(R.layout.error_dialog, errorConstraintLayout)
+        val errorDone = view.findViewById<Button>(R.id.errorDone)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setView(view)
+        val alertDialog = builder.create()
+
+        errorDone.setOnClickListener {
+            alertDialog.dismiss()
+            Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show()
+        }
+        alertDialog.setOnShowListener {
+            //alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
     }
 
     private fun setToolbar() {
