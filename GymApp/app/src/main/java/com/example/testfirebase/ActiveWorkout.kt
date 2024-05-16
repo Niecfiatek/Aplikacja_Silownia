@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 
+
 class ActiveWorkout : AppCompatActivity() {
         private lateinit var back: Button
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,19 +29,16 @@ class ActiveWorkout : AppCompatActivity() {
             insets
         }
             back=findViewById(R.id.backBtn)
-            val trainingName = intent.getStringExtra("trainingName")
-            findDocument(trainingName.toString()) {documentId ->
-                if(documentId != null)
-                {
-                    printExercisesFromDocument(documentId)
-                }
-                else
-                {
-                    Toast.makeText(this, "$trainingName", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
+            if(MyVariables.workoutId != null)
+            {
+                printExercisesFromDocument(MyVariables.workoutId.toString())
+            }
+            else
+            {
+                Toast.makeText(this, "${MyVariables.workoutId}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
             back.setOnClickListener {
                 val intent = Intent(applicationContext, MainActivity::class.java).apply {
@@ -50,25 +48,6 @@ class ActiveWorkout : AppCompatActivity() {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
         }
-
-    private fun findDocument(trainingName: String, callback: (String?) -> Unit) {
-        val collectionReference = FirebaseFirestore.getInstance().collection("WorkoutPlans")
-        collectionReference.whereEqualTo("Name of Workout Plan", trainingName)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val documentId = document.id
-                    callback(documentId)
-                    return@addOnSuccessListener  // Dodaj ten return, aby przerwać iterację po znalezieniu pasującego dokumentu
-                }
-                callback(null) // Wywołaj funkcję zwrotną z wartością null, jeśli nie znaleziono pasującego dokumentu
-            }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "Błąd podczas pobierania dokumentów: $exception")
-                callback(null)
-            }
-    }
-
     private fun printExercisesFromDocument(documentId: String) {
         val collectionReference = FirebaseFirestore.getInstance().collection("WorkoutPlans")
         val documentReference = collectionReference.document(documentId)
@@ -131,5 +110,5 @@ class ActiveWorkout : AppCompatActivity() {
     fun Int.dpToPx(): Int {
         return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
+    }
 
-}

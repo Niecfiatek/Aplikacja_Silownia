@@ -87,7 +87,7 @@ class SelectWorkout : AppCompatActivity() {
 
             button.setOnClickListener {
                 MyVariables.workoutId = workoutId
-                val intent = Intent(this, Timer::class.java)
+                val intent = Intent(this, ActiveWorkout::class.java)
                 startActivity(intent)
             }
 
