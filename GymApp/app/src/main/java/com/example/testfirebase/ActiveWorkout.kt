@@ -62,7 +62,6 @@ class ActiveWorkout : AppCompatActivity() {
                         val exerciseList = mutableListOf<Pair<String, String>>()
 
                         for ((fieldName, fieldValue) in documentData) {
-                            // Jeśli pole zawiera ćwiczenie, dodajemy je do listy
                             if (fieldName.startsWith("Exercise")) {
                                 exerciseList.add(fieldName to fieldValue.toString())
                             }
@@ -80,7 +79,13 @@ class ActiveWorkout : AppCompatActivity() {
 
                             val exerciseTextView = TextView(this)
                             exerciseTextView.text = fieldValue
-                            exerciseTextView.textSize = 21.5f // Ustawienie większej czcionki
+                            exerciseTextView.textSize = 21.5f
+
+                            exerciseTextView.setOnClickListener {
+                                val intent = Intent(this, ActiveExercise::class.java)
+                                intent.putExtra("EXERCISE_NAME", fieldValue)
+                                startActivity(intent)
+                            }
 
                             val checkBox = CheckBox(this)
                             checkBox.layoutParams = LinearLayout.LayoutParams(
@@ -88,8 +93,6 @@ class ActiveWorkout : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             )
                             checkBox.isClickable = false
-                            //checkBox.isFocusable = false
-                            // Dodaj właściwości do CheckBox, jeśli jest to wymagane
 
                             exerciseLayout.addView(exerciseTextView)
                             checkboxLayout.addView(checkBox)
