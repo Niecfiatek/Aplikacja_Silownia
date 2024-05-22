@@ -1,5 +1,6 @@
 package com.example.testfirebase
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -7,7 +8,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.Space
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,38 +16,58 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 class ActiveWorkout : AppCompatActivity() {
-        private lateinit var back: Button
-        override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var back: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_active_workout)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-            back=findViewById(R.id.backBtn)
-            if(MyVariables.workoutId != null)
-            {
-                printExercisesFromDocument(MyVariables.workoutId.toString())
-            }
-            else
-            {
-                Toast.makeText(this, "${MyVariables.workoutId}", Toast.LENGTH_SHORT).show()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            back.setOnClickListener {
-                val intent = Intent(applicationContext, MainActivity::class.java).apply {
-                    flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }
-                startActivity(intent)
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            }
+
+        back = findViewById(R.id.backBtn)
+
+        if (MyVariables.workoutId != null) {
+            printExercisesFromDocument(MyVariables.workoutId.toString())
+        } else {
+            Toast.makeText(this, "${MyVariables.workoutId}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
+
+        back.setOnClickListener {
+            showCustomDialog()
+        }
+    }
+
+    private fun showCustomDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.pop_out_custom_dialog, null)
+        val dialogBuilder = AlertDialog.Builder(this).setView(dialogView)
+        val alertDialog = dialogBuilder.create()
+
+        dialogView.findViewById<Button>(R.id.btnYes).setOnClickListener {
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            alertDialog.dismiss()
+        }
+
+        dialogView.findViewById<Button>(R.id.btnNo).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
+    }
+
+
     private fun printExercisesFromDocument(documentId: String) {
         val collectionReference = FirebaseFirestore.getInstance().collection("WorkoutPlans")
         val documentReference = collectionReference.document(documentId)
@@ -113,5 +133,4 @@ class ActiveWorkout : AppCompatActivity() {
     fun Int.dpToPx(): Int {
         return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
-    }
-
+}
