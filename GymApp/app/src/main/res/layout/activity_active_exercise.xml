@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@drawable/gradient"
+tools:context=".ActiveExercise">
+
+<TextView
+    android:id="@+id/exerciseTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Exercise Title"
+    android:textSize="24sp"
+    android:gravity="center"
+    android:padding="16dp"
+    android:textColor="@color/black"
+    android:textStyle="bold"/>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TableLayout
+        android:id="@+id/exerciseTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:stretchColumns="1,2,3,4"
+        android:background="@drawable/table_border">
+
+        <TableRow>
+            <TextView
+                android:text="Set"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"/>
+            <TextView
+                android:text="Reps"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"/>
+            <TextView
+                android:text="Weight"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"/>
+            <TextView
+                android:text="Time"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="1"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@drawable/cell_border"/>
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="Reps"
+            android:inputType="number"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@drawable/cell_border"/>
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="Weight"
+            android:inputType="numberDecimal"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@drawable/cell_border"/>
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="Time"
+            android:inputType="time"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@drawable/cell_border"/>
+        </TableRow>
+    </TableLayout>
+</ScrollView>
+
+<Button
+    android:id="@+id/addRowButton"
+    android:background="@drawable/button_regular"
+    android:textColor="@color/white"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="+" />
+
+</LinearLayout>
