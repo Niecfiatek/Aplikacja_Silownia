@@ -69,18 +69,33 @@ class Calendar : AppCompatActivity() {
             selectedCalendar.set(year, month, dayOfMonth)
             val today = Calendar.getInstance()
 
-            plansTextView.setOnClickListener{
 
-                if(today.get(Calendar.DAY_OF_MONTH)==dayOfMonth && today.get(Calendar.MONTH)+1==month+1 && today.get(Calendar.YEAR)==year && plansTextView.text!="Brak wyników" && plansTextView.text!="") {
-                    val intent = Intent(applicationContext, ActiveWorkout::class.java).apply {
-                        flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+
+            plansTextView.setOnClickListener {
+                if (today.get(Calendar.DAY_OF_MONTH) == dayOfMonth &&
+                    today.get(Calendar.MONTH) + 1 == month + 1 &&
+                    today.get(Calendar.YEAR) == year &&
+                    plansTextView.text != "Brak wyników" &&
+                    plansTextView.text != "") {
+
+                    val trainingName = plansTextView.text.toString().substringAfter(": ").trim()
+
+                    findDocument(trainingName) { documentId ->
+                        if (documentId != null) {
+                            MyVariables.workoutId = documentId
+                            //Toast.makeText(this, MyVariables.workoutId, Toast.LENGTH_SHORT).show()
+                            val intent = Intent(applicationContext, ActiveWorkout::class.java).apply {
+                                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            }
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Error: Document not found", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    startActivity(intent)
-                    finish()
-                }
-                else
-                {
-                    showErrorDialog();
+                } else {
+                    showErrorDialog()
                 }
             }
 
@@ -211,16 +226,14 @@ class Calendar : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Toast.makeText(this, trainingName, Toast.LENGTH_SHORT).show()
                     val documentId = document.id
                     callback(documentId)
                     return@addOnSuccessListener  // Dodaj ten return, aby przerwać iterację po znalezieniu pasującego dokumentu
                 }
-                Toast.makeText(this, trainingName, Toast.LENGTH_SHORT).show()
+
                 callback(null) // Wywołaj funkcję zwrotną z wartością null, jeśli nie znaleziono pasującego dokumentu
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, trainingName, Toast.LENGTH_SHORT).show()
                 callback(null)
             }
     }
