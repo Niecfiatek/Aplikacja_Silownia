@@ -32,9 +32,7 @@ class Timer : AppCompatActivity() {
     private lateinit var back: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_timer)
 
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
