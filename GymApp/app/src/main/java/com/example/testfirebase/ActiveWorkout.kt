@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -78,7 +77,6 @@ class ActiveWorkout : AppCompatActivity() {
                     val documentData = documentSnapshot.data
                     if (documentData != null) {
                         val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
-                        val checkboxLayout = findViewById<LinearLayout>(R.id.checkboxLayout)
                         val exerciseList = mutableListOf<Pair<String, String>>()
 
                         for ((fieldName, fieldValue) in documentData) {
@@ -90,32 +88,35 @@ class ActiveWorkout : AppCompatActivity() {
                         exerciseList.sortBy { it.first.substringAfter("Exercise ").toInt() }
 
                         for ((fieldName, fieldValue) in exerciseList) {
-                            val exerciseLayout = LinearLayout(this)
-                            exerciseLayout.orientation = LinearLayout.HORIZONTAL
-                            exerciseLayout.layoutParams = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                            )
+                            val exerciseLayout = LinearLayout(this).apply {
+                                orientation = LinearLayout.HORIZONTAL
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    setMargins(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
+                                }
+                                background = resources.getDrawable(R.drawable.style_unchecked, null)
+                                setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
+                            }
 
-                            val exerciseTextView = TextView(this)
-                            exerciseTextView.text = fieldValue
-                            exerciseTextView.textSize = 21.5f
+                            val exerciseTextView = TextView(this).apply {
+                                text = fieldValue
+                                textSize = 16f
+                                layoutParams = LinearLayout.LayoutParams(
+                                    0,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    1f
+                                )
+                            }
 
                             exerciseTextView.setOnClickListener {
-                                val intent = Intent(this, ActiveExercise::class.java)
+                                val intent = Intent(this@ActiveWorkout, ActiveExercise::class.java)
                                 intent.putExtra("EXERCISE_NAME", fieldValue)
                                 startActivity(intent)
                             }
 
-                            val checkBox = CheckBox(this)
-                            checkBox.layoutParams = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                            )
-                            checkBox.isClickable = false
-
                             exerciseLayout.addView(exerciseTextView)
-                            checkboxLayout.addView(checkBox)
                             exercisesLayout.addView(exerciseLayout)
                         }
                     } else {
