@@ -120,7 +120,7 @@ class Calendar : AppCompatActivity() {
             Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show()
         }
         alertDialog.setOnShowListener {
-            //alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
         }
         alertDialog.show()
     }

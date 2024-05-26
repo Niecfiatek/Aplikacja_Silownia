@@ -177,14 +177,18 @@ class ActiveExercise : AppCompatActivity() {
             TableRow.LayoutParams.WRAP_CONTENT
         )
 
-        val setTextView = TextView(this)
-        setTextView.text = setCount.toString()
-        setTextView.gravity = Gravity.CENTER
-        setTextView.setPadding(8, 8, 8, 8)
-        setTextView.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-        setTextView.setBackgroundResource(R.drawable.cell_border)
-        setTextView.height = dpToPx(40)  // Stała wysokość w dp
-        newRow.addView(setTextView)
+        val setEditView = EditText(this)
+        setEditView.isFocusable = false
+        setEditView.isFocusableInTouchMode = false
+        setEditView.isClickable = false
+        setEditView.isLongClickable = false
+        setEditView.setText(setCount.toString())
+        setEditView.gravity = Gravity.CENTER
+        setEditView.setPadding(8, 8, 8, 8)
+        setEditView.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+        setEditView.setBackgroundResource(R.drawable.cell_border)
+        setEditView.height = dpToPx(40)
+        newRow.addView(setEditView)
 
         val repsEditText = EditText(this)
         repsEditText.hint = "Reps"
@@ -193,7 +197,7 @@ class ActiveExercise : AppCompatActivity() {
         repsEditText.setPadding(8, 8, 8, 8)
         repsEditText.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
         repsEditText.setBackgroundResource(R.drawable.cell_border)
-        repsEditText.height = dpToPx(40)  // Stała wysokość w dp
+        repsEditText.height = dpToPx(40)
         newRow.addView(repsEditText)
 
         val weightEditText = EditText(this)
@@ -222,7 +226,7 @@ class ActiveExercise : AppCompatActivity() {
 
     private fun removeLastRow() {
         val rowCount = exerciseTable.childCount
-        if (rowCount > 1) {  // Ensure there's at least one row to delete
+        if (rowCount > 1) {
             exerciseTable.removeViewAt(rowCount - 1)
             setCount--
         }

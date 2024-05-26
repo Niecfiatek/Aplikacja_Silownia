@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestFirebase</string>
+    <string name="app_name">GymApp</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
