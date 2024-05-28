@@ -50,7 +50,9 @@ class AddWorkoutPlan : AppCompatActivity() {
         removeEx = findViewById(R.id.removeExercise)
         firstSpinner = findViewById(R.id.exerciseSpinner)
         backBt = findViewById(R.id.backButton)
+
         val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
+
         exerciseNamesTask.addOnSuccessListener { querySnapshot ->
             val exerciseNames = mutableListOf<String>()
             for (document in querySnapshot.documents) {
@@ -59,65 +61,128 @@ class AddWorkoutPlan : AppCompatActivity() {
                     exerciseNames.add(it)
                 }
             }
-            adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, exerciseNames)
+            adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, exerciseNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             firstSpinner.adapter = adapter
         }
+
         addEx.setOnClickListener {
             addSpinner()
         }
-        removeEx.setOnClickListener{
+        removeEx.setOnClickListener {
             removeSpinner()
         }
-        addWorkPlan.setOnClickListener{
+        addWorkPlan.setOnClickListener {
             showInputDialog()
         }
-        backBt.setOnClickListener{
-            val intent = Intent(applicationContext, MenuWorkoutPlan::class.java).apply {
+        backBt.setOnClickListener {
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
+
     }
+
     private fun addSpinner() {
         val newSpinner = Spinner(this)
         newSpinner.adapter = adapter
-        // Kopiowanie ustawień pierwszego Spinnera
         newSpinner.background = firstSpinner.background
         newSpinner.prompt = firstSpinner.prompt
         newSpinner.setSelection(firstSpinner.selectedItemPosition)
 
-        // Pobranie marginesów z pierwszego Spinnera
         val params = firstSpinner.layoutParams as LinearLayout.LayoutParams
-
-        // Ustawienie marginesów dla nowego Spinnera
         val newParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         newParams.marginStart = params.marginStart
         newParams.marginEnd = params.marginEnd
-        newParams.topMargin = 10.dpToPx()
+        newParams.topMargin = 10.dpToPx() // Ustawienie odstępu 10dp
         newSpinner.layoutParams = newParams
         workoutPlanInputContainer.addView(newSpinner)
+
+        // Dodanie nasłuchiwacza zdarzeń do Spinnera
+        newSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: android.view.View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = adapter.getItem(position)
+                selectedItem?.let {
+                    exerciseCollection.get()
+
+                    val exerciseMeasureTask: Task<QuerySnapshot> = exerciseCollection.get()
+                    exerciseMeasureTask.addOnSuccessListener { querySnapshot ->
+                        for (document in querySnapshot.documents) {
+                            if(document.getString("Name of Exercise") == selectedItem) {
+                                addMeasureInput(document.getString("Mesure")!!)
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
+
+    fun Int.dpToPx(): Int {
+        val density = resources.displayMetrics.density
+        return (this * density).toInt()
+    }
+
+    private fun addMeasureInput(selectedItem: String) {
+        val measureInput = EditText(this)
+        println("value = " + selectedItem)
+        if (selectedItem.equals("Time", ignoreCase = true)) {
+            measureInput.hint = "Enter time in seconds"
+        } else if (selectedItem.equals("Repeats", ignoreCase = true)) {
+            measureInput.hint = "Enter number of repeats"
+        } else {
+            measureInput.hint = "Enter number or time in seconds"
+        }
+        workoutPlanInputContainer.addView(measureInput)
+    }
+
+
     private fun removeSpinner() {
-        if (workoutPlanInputContainer.childCount > 1) {
-            val lastIndex = workoutPlanInputContainer.childCount - 1
-            workoutPlanInputContainer.removeViewAt(lastIndex)
+        if (workoutPlanInputContainer.childCount > 2) {
+            for (i in 0 until 2) {
+                val lastIndex = workoutPlanInputContainer.childCount - 1
+                workoutPlanInputContainer.removeViewAt(lastIndex)
+            }
         }
     }
     private fun addWorkPlan(workoutPlanName: String) {
         val workoutPlan = hashMapOf<String, Any>()
+        workoutPlan["Name of Workout Plan"] = workoutPlanName
+        val exerciseMap = hashMapOf<String, Any>()
+
+        // Iterate through the workoutPlanInputContainer to get exercise names and their corresponding values
         for (i in 0 until workoutPlanInputContainer.childCount) {
             val view = workoutPlanInputContainer.getChildAt(i)
             if (view is Spinner) {
                 val selectedExercise = view.selectedItem as String
                 val exerciseFieldName = "Exercise ${i + 1}"
-                workoutPlan[exerciseFieldName] = selectedExercise
-                workoutPlan["Name of Workout Plan"] = workoutPlanName
+                val valueView = workoutPlanInputContainer.getChildAt(i + 1)
+                if (valueView is EditText) {
+                    val valueEntered = valueView.text.toString()
+                    exerciseMap[selectedExercise] = valueEntered
+                }
             }
         }
+
+        // Add the exercise map to the workout plan
+        workoutPlan["Exercises"] = exerciseMap
+
+        // Add the workout plan to the Firestore database
         db.collection("WorkoutPlans").document().set(workoutPlan)
             .addOnSuccessListener {
                 Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()
@@ -126,17 +191,15 @@ class AddWorkoutPlan : AppCompatActivity() {
                 Toast.makeText(this@AddWorkoutPlan, "Failed!", Toast.LENGTH_SHORT).show()
             }
     }
-    fun Int.dpToPx(): Int {
-        val density = resources.displayMetrics.density
-        return (this * density).toInt()
-    }
 
     private fun showInputDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Enter Workout Plan Name")
+
         val input = EditText(this)
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
+
         builder.setPositiveButton("OK") { dialog, _ ->
             val workoutPlanName = input.text.toString()
             if (workoutPlanName.isNotEmpty()) {
@@ -147,6 +210,7 @@ class AddWorkoutPlan : AppCompatActivity() {
             dialog.dismiss()
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+
         builder.show()
     }
 
