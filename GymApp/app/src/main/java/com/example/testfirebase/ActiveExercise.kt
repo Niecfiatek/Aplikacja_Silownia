@@ -50,7 +50,11 @@ class ActiveExercise : AppCompatActivity() {
         val exerciseTitle: TextView = findViewById(R.id.exerciseTitle)
 
         val exerciseName = intent.getStringExtra("EXERCISE_NAME")
-        val exerciseReps = intent.getStringExtra("REPS")
+        val exerciseReps = intent.getStringExtra("EXERCISE_REPS")
+        val desiredRepsTextView = findViewById<TextView>(R.id.desiredReps)
+        val desiredRepsText = desiredRepsTextView.text.toString()
+        val updatedDesiredRepsText = "$desiredRepsText $exerciseReps"
+        desiredRepsTextView.text = updatedDesiredRepsText
         exerciseTitle.text = exerciseName
 
         addRowButton.setOnClickListener {

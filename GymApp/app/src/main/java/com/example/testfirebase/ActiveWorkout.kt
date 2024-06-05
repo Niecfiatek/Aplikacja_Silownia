@@ -138,7 +138,7 @@ class ActiveWorkout : AppCompatActivity() {
                     val documentData = documentSnapshot.data
                     if (documentData != null) {
                         val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
-                        val exerciseList = mutableListOf<Pair<String, String>>()
+                        val exerciseList = mutableListOf<Triple<String, String, String>>()
 
                         for ((fieldName, fieldValue) in documentData) {
                             if (fieldName.startsWith("Exercise")) {
@@ -146,15 +146,15 @@ class ActiveWorkout : AppCompatActivity() {
                                 val exerciseData = fieldValue.toString().split("=")
                                 val exerciseName = exerciseData[0].trim().removePrefix("{")
                                 val exerciseReps = exerciseData[1].trim().removeSuffix("}")
-                                exerciseList.add(fieldName to exerciseName)
+                                exerciseList.add(Triple(fieldName, exerciseName, exerciseReps))
                                 exerciseCheckedState[exerciseName] = false // Initialize checked state
                             }
                         }
 
                         exerciseList.sortBy { it.first.substringAfter("Exercise ").toInt() }
 
-                        for ((fieldName, fieldValue) in exerciseList) {
-                            val exerciseLayout = createExerciseLayout(fieldValue, R.drawable.style_unchecked)
+                        for ((fieldName, exerciseName, exerciseReps) in exerciseList) {
+                            val exerciseLayout = createExerciseLayout(exerciseName, exerciseReps, R.drawable.style_unchecked)
                             exercisesLayout.addView(exerciseLayout)
                         }
                     } else {
@@ -169,7 +169,7 @@ class ActiveWorkout : AppCompatActivity() {
             }
     }
 
-    private fun createExerciseLayout(fieldValue: String, backgroundRes: Int): LinearLayout {
+    private fun createExerciseLayout(exerciseName: String, exerciseReps: String, backgroundRes: Int): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
@@ -182,7 +182,7 @@ class ActiveWorkout : AppCompatActivity() {
             setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
 
             val exerciseTextView = TextView(this@ActiveWorkout).apply {
-                text = fieldValue
+                text = "$exerciseName"
                 textSize = 16f
                 layoutParams = LinearLayout.LayoutParams(
                     0,
@@ -190,35 +190,16 @@ class ActiveWorkout : AppCompatActivity() {
                     1f
                 )
                 setOnClickListener {
-                    if (!exerciseCheckedState[fieldValue]!!) {
+                    if (!exerciseCheckedState[exerciseName]!!) {
                         val intent = Intent(this@ActiveWorkout, ActiveExercise::class.java)
-                        intent.putExtra("EXERCISE_NAME", fieldValue)
-                        intent.putExtra("REPS",fieldValue)
+                        intent.putExtra("EXERCISE_NAME", exerciseName)
+                        intent.putExtra("EXERCISE_REPS", exerciseReps)
                         startActivityForResult(intent, REQUEST_CODE)
                     }
                 }
             }
 
             addView(exerciseTextView)
-        }
-    }
-
-    private fun toggleExerciseCheckedState(exerciseName: String) {
-        val isChecked = exerciseCheckedState[exerciseName] ?: false
-        exerciseCheckedState[exerciseName] = !isChecked
-
-        val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
-        for (i in 0 until exercisesLayout.childCount) {
-            val exerciseLayout = exercisesLayout.getChildAt(i) as LinearLayout
-            val exerciseTextView = exerciseLayout.getChildAt(0) as TextView
-            if (exerciseTextView.text == exerciseName) {
-                exerciseLayout.background = if (isChecked) {
-                    resources.getDrawable(R.drawable.style_unchecked, null)
-                } else {
-                    resources.getDrawable(R.drawable.style_checked, null)
-                }
-                break
-            }
         }
     }
 
@@ -238,7 +219,7 @@ class ActiveWorkout : AppCompatActivity() {
         for (i in 0 until exercisesLayout.childCount) {
             val exerciseLayout = exercisesLayout.getChildAt(i) as LinearLayout
             val exerciseTextView = exerciseLayout.getChildAt(0) as TextView
-            if (exerciseTextView.text == exerciseName) {
+            if (exerciseTextView.text.contains(exerciseName)) {
                 exerciseLayout.background = resources.getDrawable(R.drawable.style_checked, null)
                 exerciseLayout.setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
                 exerciseTextView.setOnClickListener(null) // Disable the click listener
