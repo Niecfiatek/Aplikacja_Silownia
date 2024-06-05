@@ -138,14 +138,14 @@ class ActiveWorkout : AppCompatActivity() {
                     val documentData = documentSnapshot.data
                     if (documentData != null) {
                         val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
-                        val exerciseList = mutableListOf<Triple<String, String, String>>()
+                        val exerciseList = mutableListOf<Triple<String, String, String?>>()
 
                         for ((fieldName, fieldValue) in documentData) {
                             if (fieldName.startsWith("Exercise")) {
                                 // Extract the exercise name and reps from the field value
                                 val exerciseData = fieldValue.toString().split("=")
                                 val exerciseName = exerciseData[0].trim().removePrefix("{")
-                                val exerciseReps = exerciseData[1].trim().removeSuffix("}")
+                                val exerciseReps = if (exerciseData.size > 1) exerciseData[1].trim().removeSuffix("}") else ""
                                 exerciseList.add(Triple(fieldName, exerciseName, exerciseReps))
                                 exerciseCheckedState[exerciseName] = false // Initialize checked state
                             }
@@ -154,7 +154,11 @@ class ActiveWorkout : AppCompatActivity() {
                         exerciseList.sortBy { it.first.substringAfter("Exercise ").toInt() }
 
                         for ((fieldName, exerciseName, exerciseReps) in exerciseList) {
-                            val exerciseLayout = createExerciseLayout(exerciseName, exerciseReps, R.drawable.style_unchecked)
+                            val backgroundRes = if (exerciseReps != null) R.drawable.style_unchecked else R.drawable.style_checked
+                            val exerciseLayout = exerciseReps?.let {
+                                createExerciseLayout(exerciseName,
+                                    it, backgroundRes)
+                            }
                             exercisesLayout.addView(exerciseLayout)
                         }
                     } else {
