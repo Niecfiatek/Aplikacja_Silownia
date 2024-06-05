@@ -3,20 +3,26 @@ package com.example.testfirebase
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ActiveWorkout : AppCompatActivity() {
     private lateinit var back: Button
+    private lateinit var finish: Button
+    private val REQUEST_CODE = 1
+    private val exerciseCheckedState = HashMap<String, Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +36,7 @@ class ActiveWorkout : AppCompatActivity() {
         }
 
         back = findViewById(R.id.backBtn)
+        finish = findViewById(R.id.finishBtn)
 
         if (MyVariables.workoutId != null) {
             printExercisesFromDocument(MyVariables.workoutId.toString())
@@ -43,6 +50,41 @@ class ActiveWorkout : AppCompatActivity() {
         back.setOnClickListener {
             showCustomDialog()
         }
+
+        finish.setOnClickListener {
+            if (areAllExercisesChecked()) {
+                showCongratulations()
+            } else {
+                showErrorDialog()
+            }
+        }
+    }
+
+    private fun areAllExercisesChecked(): Boolean {
+        return exerciseCheckedState.values.all { it }
+    }
+
+    private fun showCongratulations() {
+        val successConstraintLayout = findViewById<ConstraintLayout>(R.id.successConstraintLayout)
+        val view = LayoutInflater.from(this).inflate(R.layout.success_dialog, successConstraintLayout)
+        val successDone = view.findViewById<Button>(R.id.successDone)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setView(view)
+        val alertDialog = builder.create()
+
+        successDone.setOnClickListener {
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            alertDialog.dismiss()
+        }
+        alertDialog.setOnShowListener {
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
     }
 
     private fun showCustomDialog() {
@@ -66,6 +108,23 @@ class ActiveWorkout : AppCompatActivity() {
         alertDialog.show()
     }
 
+    private fun showErrorDialog() {
+        val errorConstraintLayout = findViewById<ConstraintLayout>(R.id.errorConstraintLayout)
+        val view = LayoutInflater.from(this).inflate(R.layout.error_dialog, errorConstraintLayout)
+        val errorDone = view.findViewById<Button>(R.id.errorDone)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setView(view)
+        val alertDialog = builder.create()
+
+        errorDone.setOnClickListener {
+            alertDialog.dismiss()
+        }
+        alertDialog.setOnShowListener {
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        }
+        alertDialog.show()
+    }
 
     private fun printExercisesFromDocument(documentId: String) {
         val collectionReference = FirebaseFirestore.getInstance().collection("WorkoutPlans")
@@ -82,41 +141,14 @@ class ActiveWorkout : AppCompatActivity() {
                         for ((fieldName, fieldValue) in documentData) {
                             if (fieldName.startsWith("Exercise")) {
                                 exerciseList.add(fieldName to fieldValue.toString())
+                                exerciseCheckedState[fieldValue.toString()] = false // Initialize checked state
                             }
                         }
 
                         exerciseList.sortBy { it.first.substringAfter("Exercise ").toInt() }
 
                         for ((fieldName, fieldValue) in exerciseList) {
-                            val exerciseLayout = LinearLayout(this).apply {
-                                orientation = LinearLayout.HORIZONTAL
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    setMargins(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
-                                }
-                                background = resources.getDrawable(R.drawable.style_unchecked, null)
-                                setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
-                            }
-
-                            val exerciseTextView = TextView(this).apply {
-                                text = fieldValue
-                                textSize = 16f
-                                layoutParams = LinearLayout.LayoutParams(
-                                    0,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    1f
-                                )
-                            }
-
-                            exerciseTextView.setOnClickListener {
-                                val intent = Intent(this@ActiveWorkout, ActiveExercise::class.java)
-                                intent.putExtra("EXERCISE_NAME", fieldValue)
-                                startActivity(intent)
-                            }
-
-                            exerciseLayout.addView(exerciseTextView)
+                            val exerciseLayout = createExerciseLayout(fieldValue, R.drawable.style_unchecked)
                             exercisesLayout.addView(exerciseLayout)
                         }
                     } else {
@@ -129,6 +161,83 @@ class ActiveWorkout : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("TAG", "Błąd podczas pobierania dokumentu: $exception")
             }
+    }
+
+    private fun createExerciseLayout(fieldValue: String, backgroundRes: Int): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
+            }
+            background = resources.getDrawable(backgroundRes, null)
+            setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
+
+            val exerciseTextView = TextView(this@ActiveWorkout).apply {
+                text = fieldValue
+                textSize = 16f
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+                setOnClickListener {
+                    if (!exerciseCheckedState[fieldValue]!!) {
+                        val intent = Intent(this@ActiveWorkout, ActiveExercise::class.java)
+                        intent.putExtra("EXERCISE_NAME", fieldValue)
+                        startActivityForResult(intent, REQUEST_CODE)
+                    }
+                }
+            }
+
+            addView(exerciseTextView)
+        }
+    }
+
+    private fun toggleExerciseCheckedState(exerciseName: String) {
+        val isChecked = exerciseCheckedState[exerciseName] ?: false
+        exerciseCheckedState[exerciseName] = !isChecked
+
+        val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
+        for (i in 0 until exercisesLayout.childCount) {
+            val exerciseLayout = exercisesLayout.getChildAt(i) as LinearLayout
+            val exerciseTextView = exerciseLayout.getChildAt(0) as TextView
+            if (exerciseTextView.text == exerciseName) {
+                exerciseLayout.background = if (isChecked) {
+                    resources.getDrawable(R.drawable.style_unchecked, null)
+                } else {
+                    resources.getDrawable(R.drawable.style_checked, null)
+                }
+                break
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            val exerciseName = data?.getStringExtra("EXERCISE_NAME")
+            if (exerciseName != null) {
+                updateExerciseBackground(exerciseName)
+            }
+        }
+    }
+
+    private fun updateExerciseBackground(exerciseName: String) {
+        exerciseCheckedState[exerciseName] = true
+        val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
+        for (i in 0 until exercisesLayout.childCount) {
+            val exerciseLayout = exercisesLayout.getChildAt(i) as LinearLayout
+            val exerciseTextView = exerciseLayout.getChildAt(0) as TextView
+            if (exerciseTextView.text == exerciseName) {
+                exerciseLayout.background = resources.getDrawable(R.drawable.style_checked, null)
+                exerciseLayout.setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
+                exerciseTextView.setOnClickListener(null) // Disable the click listener
+                break
+            }
+        }
     }
 
     fun Int.dpToPx(): Int {

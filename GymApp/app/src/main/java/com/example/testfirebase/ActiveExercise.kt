@@ -29,6 +29,7 @@ class ActiveExercise : AppCompatActivity() {
     private lateinit var customCountdownTimer : CustomCountdownTimer
     private lateinit var editTextSeconds: EditText
     private lateinit var back: Button
+    private lateinit var finish: Button
     private lateinit var exerciseTable: TableLayout
     private var setCount = 2
 
@@ -69,7 +70,7 @@ class ActiveExercise : AppCompatActivity() {
         circularProgressBar = findViewById(R.id.circularProgresssBar)
         editTextSeconds = findViewById(R.id.editTextSeconds)
         back = findViewById(R.id.backBt)
-
+        finish = findViewById(R.id.finishBt)
 
         var secondsLeft = 0
         customCountdownTimer = object : CustomCountdownTimer(clockTime, 1000) {}
@@ -167,6 +168,13 @@ class ActiveExercise : AppCompatActivity() {
             }
             startActivity(intent)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+
+        finish.setOnClickListener {
+            val intent = Intent()
+            intent.putExtra("EXERCISE_NAME", exerciseName)
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 
