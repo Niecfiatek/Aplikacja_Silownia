@@ -66,7 +66,6 @@ class ActiveWorkout : AppCompatActivity() {
         alertDialog.show()
     }
 
-
     private fun printExercisesFromDocument(documentId: String) {
         val collectionReference = FirebaseFirestore.getInstance().collection("WorkoutPlans")
         val documentReference = collectionReference.document(documentId)
@@ -77,47 +76,43 @@ class ActiveWorkout : AppCompatActivity() {
                     val documentData = documentSnapshot.data
                     if (documentData != null) {
                         val exercisesLayout = findViewById<LinearLayout>(R.id.exercisesLayout)
-                        val exerciseList = mutableListOf<Pair<String, String>>()
+                        val exercisesMap = documentData["Exercises"] as Map<String, String>?
 
-                        for ((fieldName, fieldValue) in documentData) {
-                            if (fieldName.startsWith("Exercise")) {
-                                exerciseList.add(fieldName to fieldValue.toString())
-                            }
-                        }
-
-                        exerciseList.sortBy { it.first.substringAfter("Exercise ").toInt() }
-
-                        for ((fieldName, fieldValue) in exerciseList) {
-                            val exerciseLayout = LinearLayout(this).apply {
-                                orientation = LinearLayout.HORIZONTAL
-                                layoutParams = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    setMargins(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
+                        if (exercisesMap != null) {
+                            for ((exerciseName, exerciseReps) in exercisesMap) {
+                                val exerciseLayout = LinearLayout(this).apply {
+                                    orientation = LinearLayout.HORIZONTAL
+                                    layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT
+                                    ).apply {
+                                        setMargins(16.dpToPx(), 8.dpToPx(), 16.dpToPx(), 8.dpToPx())
+                                    }
+                                    background = resources.getDrawable(R.drawable.style_unchecked, null)
+                                    setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
                                 }
-                                background = resources.getDrawable(R.drawable.style_unchecked, null)
-                                setPadding(16.dpToPx(), 16.dpToPx(), 16.dpToPx(), 16.dpToPx())
-                            }
 
-                            val exerciseTextView = TextView(this).apply {
-                                text = fieldValue
-                                textSize = 16f
-                                layoutParams = LinearLayout.LayoutParams(
-                                    0,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    1f
-                                )
-                            }
+                                val exerciseTextView = TextView(this).apply {
+                                    text = "$exerciseName"
+                                    textSize = 16f
+                                    layoutParams = LinearLayout.LayoutParams(
+                                        0,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                                        1f
+                                    )
+                                }
 
-                            exerciseTextView.setOnClickListener {
-                                val intent = Intent(this@ActiveWorkout, ActiveExercise::class.java)
-                                intent.putExtra("EXERCISE_NAME", fieldValue)
-                                startActivity(intent)
-                            }
+                                exerciseTextView.setOnClickListener {
+                                    val intent = Intent(this@ActiveWorkout, ActiveExercise::class.java)
+                                    intent.putExtra("EXERCISE_NAME", exerciseName)
+                                    startActivity(intent)
+                                }
 
-                            exerciseLayout.addView(exerciseTextView)
-                            exercisesLayout.addView(exerciseLayout)
+                                exerciseLayout.addView(exerciseTextView)
+                                exercisesLayout.addView(exerciseLayout)
+                            }
+                        } else {
+                            Log.d("TAG", "Brak ćwiczeń w dokumencie.")
                         }
                     } else {
                         Log.d("TAG", "Brak danych w dokumencie.")
