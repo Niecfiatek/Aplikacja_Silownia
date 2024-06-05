@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var calendar: Button
     private lateinit var timer: Button
     private lateinit var menuWorkout: Button
+    private lateinit var stats: Button
     private lateinit var textView:TextView
     private val user = auth.currentUser
 
@@ -98,6 +99,17 @@ class MainActivity : AppCompatActivity() {
 
         menuWorkout.setOnClickListener {
             val intent = Intent(applicationContext, MenuWorkoutPlan::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        }
+
+        /// Stats Button
+        stats = findViewById(R.id.stats)
+
+        stats.setOnClickListener {
+            val intent = Intent(applicationContext, Stats::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             startActivity(intent)
