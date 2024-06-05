@@ -17,6 +17,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ActiveWorkout : AppCompatActivity() {
     private lateinit var back: Button
@@ -74,6 +77,7 @@ class ActiveWorkout : AppCompatActivity() {
         val alertDialog = builder.create()
 
         successDone.setOnClickListener {
+            saveWorkoutCompletionData()
             val intent = Intent(applicationContext, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
@@ -85,6 +89,43 @@ class ActiveWorkout : AppCompatActivity() {
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
         }
         alertDialog.show()
+    }
+
+    private fun saveWorkoutCompletionData() {
+        val firestore = FirebaseFirestore.getInstance()
+        val calendarCollection = firestore.collection("CalendarCollection")
+
+        val currentDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+
+        val workoutId = MyVariables.workoutId
+        if (workoutId != null) {
+            val workoutRef = firestore.collection("WorkoutPlans").document(workoutId)
+
+            workoutRef.get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val workoutName = documentSnapshot.getString("Name of Workout Plan")
+
+                        val workoutData = hashMapOf(
+                            "Workout Plan Name" to workoutName,
+                            "Date" to currentDate
+                        )
+
+                        calendarCollection.add(workoutData)
+                            .addOnSuccessListener { documentReference ->
+                                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("TAG", "Error adding document", e)
+                            }
+                    } else {
+                        Log.d("TAG", "No such document")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("TAG", "Error getting document", e)
+                }
+        }
     }
 
     private fun showCustomDialog() {
