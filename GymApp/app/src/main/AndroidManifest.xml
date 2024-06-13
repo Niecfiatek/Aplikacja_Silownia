@@ -19,6 +19,7 @@
             android:exported="false" />
         <activity
             android:name=".ActiveExercise"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
             android:name=".SelectWorkout"
