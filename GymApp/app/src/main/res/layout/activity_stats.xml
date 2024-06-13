@@ -154,6 +154,19 @@
     </TableLayout>
 
 
+    <Spinner
+        android:id="@+id/exerciseSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/style_spinner"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/newExerciseTable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseTable"
+        app:layout_constraintVertical_bias="0.729" />
+
     <TableLayout
         android:id="@+id/newExerciseTable"
         android:layout_width="match_parent"
@@ -165,12 +178,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/exerciseTable"
-        app:layout_constraintVertical_bias="0.361">
+
+        app:layout_constraintTop_toBottomOf="@+id/exerciseTable"
+        app:layout_constraintVertical_bias="0.678">
 
         <TableRow>
 
             <TextView
+                android:id="@+id/tittleOfExercise"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -204,7 +219,7 @@
                 android:background="@drawable/cell_border"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Curr month"
+                android:text="Prev month"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -215,13 +230,14 @@
                 android:background="@drawable/cell_border"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Prev month"
+                android:text="Curr month"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
         </TableRow>
 
         <!-- Row 1: Avg weight -->
+
         <TableRow>
 
             <TextView
@@ -231,11 +247,11 @@
                 android:background="@drawable/cell_border"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Avg weight"
+                android:text="Number of sets"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/avgWeightCurMonth"
+                android:id="@+id/numOfSetsCurMonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -246,7 +262,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/avgWeightPrevMonth"
+                android:id="@+id/numOfSetsPrevMonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -257,7 +273,6 @@
                 android:textColor="@color/black" />
 
         </TableRow>
-
         <!-- Row 2: Avg reps -->
         <TableRow>
 
@@ -296,6 +311,7 @@
         </TableRow>
 
         <!-- Row 3: Number of sets -->
+
         <TableRow>
 
             <TextView
@@ -305,11 +321,11 @@
                 android:background="@drawable/cell_border"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Number of sets"
+                android:text="Avg weight"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/numOfSetsCurMonth"
+                android:id="@+id/avgWeightCurMonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -320,7 +336,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/numOfSetsPrevMonth"
+                android:id="@+id/avgWeightPrevMonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

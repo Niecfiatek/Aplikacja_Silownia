@@ -14,6 +14,11 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.content.Intent
+import android.view.View
+import android.widget.AdapterView
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.QuerySnapshot
+import org.w3c.dom.Text
 import java.util.Calendar
 
 class Stats : AppCompatActivity() {
@@ -23,6 +28,13 @@ class Stats : AppCompatActivity() {
     private lateinit var yearSpinner: Spinner
     private lateinit var monthSpinner: Spinner
     private lateinit var exerciseTable: TableLayout
+    private lateinit var choosenExerciseTable: TableLayout
+    private lateinit var exerciseTitleTable: TextView
+    private lateinit var exerciseSpinner: Spinner
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var exerciseNames: MutableList<String>
+    private val dbExercise = FirebaseFirestore.getInstance()
+    private val exerciseCollection = dbExercise.collection("Exercise")
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -41,6 +53,11 @@ class Stats : AppCompatActivity() {
         yearSpinner = findViewById(R.id.yearSpinner)
         monthSpinner = findViewById(R.id.monthSpinner)
         exerciseTable = findViewById(R.id.exerciseTable)
+        choosenExerciseTable = findViewById(R.id.newExerciseTable)
+        exerciseTitleTable = findViewById(R.id.tittleOfExercise)
+        exerciseSpinner = findViewById(R.id.exerciseSpinner)
+        exerciseNames = mutableListOf()
+
 
         back = findViewById(R.id.backBt)
         back.setOnClickListener {
@@ -77,6 +94,39 @@ class Stats : AppCompatActivity() {
 
             fetchData(selectedYear, selectedMonth, previousMonth)
         }
+
+        loadExerciseNames()
+    }
+
+    private fun loadExerciseNames() {
+        val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
+
+        exerciseNamesTask.addOnSuccessListener { querySnapshot ->
+            for (document in querySnapshot.documents) {
+                val exerciseName = document.getString("Name of Exercise")
+                exerciseName?.let {
+                    exerciseNames.add(it)
+                }
+            }
+            setupSpinner()
+        }
+    }
+
+    private fun setupSpinner() {
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, exerciseNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        exerciseSpinner.adapter = adapter
+        exerciseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedExercise = exerciseNames[position]
+                exerciseTitleTable.text = selectedExercise
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Nie używane w tym przypadku
+            }
+        }
+
+
     }
 
     private fun getPreviousMonth(currentMonth: String): String {
@@ -99,6 +149,27 @@ class Stats : AppCompatActivity() {
                 val currentMonthSnapshot = snapshot.documents.filter { it.getString("Date")?.matches(Regex(currentDatePattern)) == true }
                 val previousMonthSnapshot = snapshot.documents.filter { it.getString("Date")?.matches(Regex(previousDatePattern)) == true }
                 updateTable(currentMonthSnapshot, previousMonthSnapshot)
+            }
+    }
+
+    private fun getInfoExercise(nameOfExercise: String, year: String, currentMonth: String, previousMonth: String){
+        choosenExerciseTable.removeAllViews()
+        val currentDatePattern = ".*\\.$currentMonth\\.$year"
+        val previousDatePattern = if (currentMonth == "01") {
+            ".*\\.12\\.${year.toInt() - 1}"
+        } else {
+            ".*\\.$previousMonth\\.$year"
+        }
+        db.collection("CalendarCollection")
+            .whereEqualTo("Workout Plan Name", nameOfExercise)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val currentMonthSnapshot = snapshot.documents.filter { it.getString("Date")?.matches(Regex(currentDatePattern)) == true }
+                val previousMonthSnapshot = snapshot.documents.filter { it.getString("Date")?.matches(Regex(previousDatePattern)) == true }
+            }
+            .addOnFailureListener { exception ->
+                // Handle failure
+                exception.printStackTrace()
             }
     }
 
