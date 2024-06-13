@@ -99,11 +99,10 @@ class AddWorkoutPlan : AppCompatActivity() {
         )
         newParams.marginStart = params.marginStart
         newParams.marginEnd = params.marginEnd
-        newParams.topMargin = 10.dpToPx() // Ustawienie odstępu 10dp
+        newParams.topMargin = 10.dpToPx()
         newSpinner.layoutParams = newParams
         workoutPlanInputContainer.addView(newSpinner)
 
-        // Dodanie nasłuchiwacza zdarzeń do Spinnera
         newSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -165,7 +164,6 @@ class AddWorkoutPlan : AppCompatActivity() {
         workoutPlan["Name of Workout Plan"] = workoutPlanName
         val exerciseMap = hashMapOf<String, Any>()
 
-        // Iterate through the workoutPlanInputContainer to get exercise names and their corresponding values
         for (i in 0 until workoutPlanInputContainer.childCount) {
             val view = workoutPlanInputContainer.getChildAt(i)
             if (view is Spinner) {
@@ -179,10 +177,8 @@ class AddWorkoutPlan : AppCompatActivity() {
             }
         }
 
-        // Add the exercise map to the workout plan
         workoutPlan["Exercises"] = exerciseMap
 
-        // Add the workout plan to the Firestore database
         db.collection("WorkoutPlans").document().set(workoutPlan)
             .addOnSuccessListener {
                 Toast.makeText(this@AddWorkoutPlan, "Successfully Added!", Toast.LENGTH_SHORT).show()

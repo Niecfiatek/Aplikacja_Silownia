@@ -26,6 +26,7 @@ class ActiveWorkout : AppCompatActivity() {
     private lateinit var finish: Button
     private val REQUEST_CODE = 1
     private val exerciseCheckedState = HashMap<String, Boolean>()
+    private val exerciseDataMap = HashMap<String, String>() // To store EXERCISE_DATA_STRING for each exercise
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,10 +107,16 @@ class ActiveWorkout : AppCompatActivity() {
                     if (documentSnapshot.exists()) {
                         val workoutName = documentSnapshot.getString("Name of Workout Plan")
 
-                        val workoutData = hashMapOf(
-                            "Workout Plan Name" to workoutName,
-                            "Date" to currentDate
-                        )
+                        val workoutData = hashMapOf<String, Any>()
+                        workoutData["Workout Plan Name"] = workoutName ?:"Unknown Plan"
+                        workoutData["Date"] = currentDate;
+
+                        val exerciseMap = hashMapOf<String, String>()
+                        for ((exerciseName, exerciseDataString) in exerciseDataMap) {
+                            exerciseMap[exerciseName] = exerciseDataString
+                        }
+
+                        workoutData["Exercises"] = exerciseMap
 
                         calendarCollection.add(workoutData)
                             .addOnSuccessListener { documentReference ->
@@ -149,7 +156,6 @@ class ActiveWorkout : AppCompatActivity() {
         alertDialog.show()
     }
 
-
     private fun showErrorDialog() {
         val errorConstraintLayout = findViewById<ConstraintLayout>(R.id.errorConstraintLayout)
         val view = LayoutInflater.from(this).inflate(R.layout.error_dialog, errorConstraintLayout)
@@ -167,7 +173,6 @@ class ActiveWorkout : AppCompatActivity() {
         }
         alertDialog.show()
     }
-
 
     private fun printExercisesFromDocument(documentId: String) {
         val collectionReference = FirebaseFirestore.getInstance().collection("WorkoutPlans")
@@ -216,8 +221,6 @@ class ActiveWorkout : AppCompatActivity() {
             }
     }
 
-
-
     private fun createExerciseLayout(exerciseName: String, exerciseReps: String, backgroundRes: Int): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -256,8 +259,10 @@ class ActiveWorkout : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             val exerciseName = data?.getStringExtra("EXERCISE_NAME")
-            if (exerciseName != null) {
+            val exerciseDataString = data?.getStringExtra("EXERCISE_DATA_STRING")
+            if (exerciseName != null && exerciseDataString != null) {
                 updateExerciseBackground(exerciseName)
+                exerciseDataMap[exerciseName] = exerciseDataString // Save the EXERCISE_DATA_STRING
             }
         }
     }

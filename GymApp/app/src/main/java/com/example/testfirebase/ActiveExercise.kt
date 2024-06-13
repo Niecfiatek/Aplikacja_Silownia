@@ -176,12 +176,18 @@ class ActiveExercise : AppCompatActivity() {
         }
 
         finish.setOnClickListener {
+            val exerciseName = intent.getStringExtra("EXERCISE_NAME")
+            val exerciseDataString = readAllTable()
+
             val intent = Intent()
             intent.putExtra("EXERCISE_NAME", exerciseName)
+            intent.putExtra("EXERCISE_DATA_STRING", exerciseDataString)
             setResult(RESULT_OK, intent)
             finish()
         }
     }
+
+    private val exerciseData = mutableListOf<Map<String, Any>>()
 
     private fun addNewRow() {
         val newRow = TableRow(this)
@@ -223,18 +229,9 @@ class ActiveExercise : AppCompatActivity() {
         weightEditText.height = dpToPx(40)  // Stała wysokość w dp
         newRow.addView(weightEditText)
 
-        val timeEditText = EditText(this)
-        timeEditText.hint = "Time"
-        timeEditText.gravity = Gravity.CENTER
-        timeEditText.inputType = InputType.TYPE_CLASS_NUMBER
-        timeEditText.setPadding(8, 8, 8, 8)
-        timeEditText.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-        timeEditText.setBackgroundResource(R.drawable.cell_border)
-        timeEditText.height = dpToPx(40)  // Stała wysokość w dp
-        newRow.addView(timeEditText)
-
         exerciseTable.addView(newRow)
         setCount++
+
     }
 
     private fun removeLastRow() {
@@ -244,6 +241,36 @@ class ActiveExercise : AppCompatActivity() {
             setCount--
         }
     }
+
+    private fun readAllTable(): String {
+        var totalSets = 0
+        var totalReps = 0
+        var totalWeight = 0.0
+
+        for (i in 1 until exerciseTable.childCount) {  // Start from 1 to skip the header row
+            val row = exerciseTable.getChildAt(i) as TableRow
+            val repsEditText = row.getChildAt(1) as EditText
+            val weightEditText = row.getChildAt(2) as EditText
+
+            val reps = repsEditText.text.toString().toIntOrNull() ?: 0
+            val weight = weightEditText.text.toString().toDoubleOrNull() ?: 0.0
+
+            totalSets++
+            totalReps += reps
+            totalWeight += weight
+        }
+
+        val averageReps = if (totalSets > 0) totalReps.toDouble() / totalSets else 0.0
+        val averageWeight = if (totalSets > 0) totalWeight / totalSets else 0.0
+
+        val decimalFormat = DecimalFormat("#.##")
+        val formattedReps = decimalFormat.format(averageReps)
+        val formattedWeight = decimalFormat.format(averageWeight)
+
+        val resultString = "$totalSets,$formattedReps,$formattedWeight"
+        return resultString
+    }
+
     private fun dpToPx(dp: Int): Int {
         val density = resources.displayMetrics.density
         return (dp * density).toInt()
