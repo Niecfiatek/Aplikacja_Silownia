@@ -6,10 +6,11 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.text.InputType
 import android.view.MotionEvent
-import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,12 +21,12 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.appcompat.app.AlertDialog
-import com.google.firebase.firestore.core.View
 
 class AddWorkoutPlan : AppCompatActivity() {
     private val db = Firebase.firestore
     private val exerciseCollection = db.collection("Exercise")
     private lateinit var workoutPlanInputContainer: LinearLayout
+    private lateinit var exerciseListContainer: LinearLayout
     private lateinit var addEx: Button
     private lateinit var addWorkPlan: Button
     private lateinit var removeEx: Button
@@ -33,6 +34,8 @@ class AddWorkoutPlan : AppCompatActivity() {
     private lateinit var firstSpinner: Spinner
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var listofExercise: MutableList<String>
+    private lateinit var exerciseListTextView: TextView
+    private lateinit var scrollView: ScrollView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,16 @@ class AddWorkoutPlan : AppCompatActivity() {
         removeEx = findViewById(R.id.removeExercise)
         firstSpinner = findViewById(R.id.exerciseSpinner)
         backBt = findViewById(R.id.backButton)
+        scrollView = findViewById(R.id.exerciseScrollView)
+        exerciseListContainer = findViewById(R.id.exerciseListContainer)
+        exerciseListTextView = TextView(this).apply {
+            text = "Exercise list"
+            textSize = 18f
+            gravity = android.view.Gravity.CENTER_HORIZONTAL
+            visibility = TextView.GONE
+            setTextColor(resources.getColor(android.R.color.black, null))
+        }
+        workoutPlanInputContainer.addView(exerciseListTextView, 1) // Add it after the spinner
 
         val exerciseNamesTask: Task<QuerySnapshot> = exerciseCollection.get()
 
@@ -67,14 +80,20 @@ class AddWorkoutPlan : AppCompatActivity() {
         }
 
         addEx.setOnClickListener {
-            addSpinner()
+            val selectedExercise = firstSpinner.selectedItem as String
+            if (selectedExercise.isNotEmpty()) {
+                addExerciseToList(selectedExercise)
+            }
         }
+
         removeEx.setOnClickListener {
-            removeSpinner()
+            removeLastExercise()
         }
+
         addWorkPlan.setOnClickListener {
             showInputDialog()
         }
+
         backBt.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -82,98 +101,61 @@ class AddWorkoutPlan : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
-
     }
 
-    private fun addSpinner() {
-        val newSpinner = Spinner(this)
-        newSpinner.adapter = adapter
-        newSpinner.background = firstSpinner.background
-        newSpinner.prompt = firstSpinner.prompt
-        newSpinner.setSelection(firstSpinner.selectedItemPosition)
+    private fun addExerciseToList(exerciseName: String) {
+        val exerciseButton = Button(this).apply {
+            text = exerciseName
+            isClickable = false
+            isEnabled = false
+            setBackgroundResource(R.drawable.button_regular)
+            setTextColor(resources.getColor(R.color.white, null))
+            backgroundTintList = null
+        }
+        val measureInput = EditText(this).apply {
+            hint = "Enter value for $exerciseName"
+            setHintTextColor(resources.getColor(android.R.color.black, null))
+        }
+        listofExercise.add(exerciseName)
+        exerciseListContainer.addView(exerciseButton)
+        exerciseListContainer.addView(measureInput)
+        exerciseListTextView.visibility = TextView.VISIBLE
 
-        val params = firstSpinner.layoutParams as LinearLayout.LayoutParams
-        val newParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        newParams.marginStart = params.marginStart
-        newParams.marginEnd = params.marginEnd
-        newParams.topMargin = 10.dpToPx()
-        newSpinner.layoutParams = newParams
-        workoutPlanInputContainer.addView(newSpinner)
+        // Scroll to the bottom of the ScrollView
+        scrollView.post {
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+        }
+    }
 
-        newSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: android.view.View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedItem = adapter.getItem(position)
-                selectedItem?.let {
-                    exerciseCollection.get()
-
-                    val exerciseMeasureTask: Task<QuerySnapshot> = exerciseCollection.get()
-                    exerciseMeasureTask.addOnSuccessListener { querySnapshot ->
-                        for (document in querySnapshot.documents) {
-                            if(document.getString("Name of Exercise") == selectedItem) {
-                                addMeasureInput(document.getString("Mesure")!!)
-                            }
-                        }
-                    }
-
-
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+    private fun removeLastExercise() {
+        if (listofExercise.isNotEmpty()) {
+            listofExercise.removeAt(listofExercise.size - 1)
+            exerciseListContainer.removeViewAt(exerciseListContainer.childCount - 1) // Remove EditText
+            exerciseListContainer.removeViewAt(exerciseListContainer.childCount - 1) // Remove Button
+            if (listofExercise.isEmpty()) {
+                exerciseListTextView.visibility = TextView.GONE
             }
         }
     }
 
-    fun Int.dpToPx(): Int {
-        val density = resources.displayMetrics.density
-        return (this * density).toInt()
-    }
-
-    private fun addMeasureInput(selectedItem: String) {
-        val measureInput = EditText(this)
-        println("value = " + selectedItem)
-        if (selectedItem.equals("Time", ignoreCase = true)) {
-            measureInput.hint = "Enter time in seconds"
-        } else if (selectedItem.equals("Repeats", ignoreCase = true)) {
-            measureInput.hint = "Enter number of repeats"
-        } else {
-            measureInput.hint = "Enter number or time in seconds"
-        }
-        workoutPlanInputContainer.addView(measureInput)
-    }
-
-
-    private fun removeSpinner() {
-        if (workoutPlanInputContainer.childCount > 2) {
-            for (i in 0 until 2) {
-                val lastIndex = workoutPlanInputContainer.childCount - 1
-                workoutPlanInputContainer.removeViewAt(lastIndex)
-            }
-        }
-    }
     private fun addWorkPlan(workoutPlanName: String) {
         val workoutPlan = hashMapOf<String, Any>()
         workoutPlan["Name of Workout Plan"] = workoutPlanName
         val exerciseMap = hashMapOf<String, Any>()
 
-        for (i in 0 until workoutPlanInputContainer.childCount) {
-            val view = workoutPlanInputContainer.getChildAt(i)
-            if (view is Spinner) {
-                val selectedExercise = view.selectedItem as String
-                val exerciseFieldName = "Exercise ${i + 1}"
-                val valueView = workoutPlanInputContainer.getChildAt(i + 1)
+        var i = 0
+        while (i < exerciseListContainer.childCount) {
+            val view = exerciseListContainer.getChildAt(i)
+            if (view is Button) {
+                val exerciseName = view.text.toString()
+                val valueView = exerciseListContainer.getChildAt(i + 1)
                 if (valueView is EditText) {
                     val valueEntered = valueView.text.toString()
-                    exerciseMap[selectedExercise] = valueEntered
+                    exerciseMap[exerciseName] = valueEntered
                 }
+                i += 2 // Move to the next pair of Button and EditText
+            } else {
+                i++
             }
         }
 

@@ -13,6 +13,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Select Exercise and click 'Add'"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            />
+
         <LinearLayout
             android:id="@+id/workoutPlanInputContainer"
             android:layout_width="match_parent"
@@ -28,6 +38,20 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:textSize="40sp" />
+
+            <ScrollView
+                android:id="@+id/exerciseScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="340dp"
+                android:layout_marginTop="16dp">
+
+                <LinearLayout
+                    android:id="@+id/exerciseListContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </ScrollView>
 
         </LinearLayout>
 
