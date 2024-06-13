@@ -153,6 +153,187 @@
 
     </TableLayout>
 
+
+    <TableLayout
+        android:id="@+id/newExerciseTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/table_border"
+        android:padding="16dp"
+        android:stretchColumns="1,2,3"
+        app:layout_constraintBottom_toTopOf="@id/backBt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exerciseTable"
+        app:layout_constraintVertical_bias="0.361">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Name of Exercise"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <!-- Table Header -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Unit of measurement"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Curr month"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Prev month"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <!-- Row 1: Avg weight -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Avg weight"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/avgWeightCurMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/avgWeightPrevMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+        </TableRow>
+
+        <!-- Row 2: Avg reps -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Avg reps"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/avgRepsCurMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/avgRepsPrevMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+        </TableRow>
+
+        <!-- Row 3: Number of sets -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Number of sets"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/numOfSetsCurMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/numOfSetsPrevMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/cell_border"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+        </TableRow>
+
+    </TableLayout>
+
     <Button
         android:id="@+id/backBt"
         android:layout_width="wrap_content"
